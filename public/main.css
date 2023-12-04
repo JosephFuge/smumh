@@ -1,15 +1,74 @@
+body {
+    display: flex;
+    justify-content: center;
+    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif
+}
+
 datalist {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 200px;
-  }
-  
-  option {
+    margin: 0 auto;
+}
+
+option {
     padding: 0;
-  }
-  
-  input[type="range"] {
+}
+
+input[type="range"] {
     width: 200px;
-    margin: 0;
-  }
+    margin: 0 auto;
+    display: block;
+}
+
+#surveyForm {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: #EEEEEEEE;
+    width: fit-content;
+    border: 1px black solid;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+#non-scaleQuestions {
+    text-align: left;
+}
+
+#scaleQuestions {
+    display: none;
+}
+
+#nextButton {
+    
+}
+
+.platform-checkbox, .organization-type-checkbox {
+    display: block;
+}
+
+.survey-question {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.scale-group {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 200px; /* This should match the width of your input[type="range"] */
+    margin: 0 auto;
+}
+
+/* .scale-labels span {
+    text-align: center;
+    flex: 1;
+} */
