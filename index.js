@@ -4,6 +4,7 @@ let path = require("path");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+let a = "a";
 
 const knex = require("knex")({
   client: "pg",
