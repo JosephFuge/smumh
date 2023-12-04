@@ -9,6 +9,7 @@
   "author": "Joseph Fuge, Coleman Shuldberg, Maleah Yee, Annelise Anderson",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "knex": "^3.0.1"
   }
 }
