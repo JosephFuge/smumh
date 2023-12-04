@@ -1,17 +1,19 @@
 const express = require("express");
 const app = express();
-const PORT_NUM = 3000;
+let path = require("path");
+const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 const knex = require("knex")({
   client: "pg",
   connection: {
-    host: "localhost",
-    user: "postgres",
-    password: "postgres",
-    database: "intex",
-    port: 5432
+    host: process.env.RDS_HOSTNAME || "localhost",
+    user: process.env.RDS_USERNAME || "postgres",
+    password: process.env.RDS_PASSWORD || "postgres",
+    database: process.env.RDS_DB_NAME || "intex",
+    port: process.env.RDS_PORT || 5432,
+    ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
   }
 });
 
