@@ -45,6 +45,35 @@ input[type="range"] {
     
 }
 
+.rounded-button {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 32px;
+    border: 4px #00A2E0 solid;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.rounded-button:hover, .rounded-button:focus {
+    animation-name: buttonGlow;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes buttonGlow {
+    from {
+        box-shadow: 0px 0px 0px 0px #86ddff;
+    }
+
+    to {
+        box-shadow: 0px 0px 10px 5px #86ddff;
+    }
+}
+
 .platform-checkbox, .organization-type-checkbox {
     display: block;
 }
