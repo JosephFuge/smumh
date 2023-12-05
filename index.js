@@ -3,8 +3,6 @@ const app = express();
 let path = require("path");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
-app.set("view engine", "ejs");
-let a = "a";
 
 const knex = require("knex")({
   client: "pg",
@@ -17,6 +15,10 @@ const knex = require("knex")({
     ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
   }
 });
+
+app.get("/index", (req, res) => {
+   res.render("index");
+})
 
 // Frontend static middleware
 app.use(express.static('public'));
