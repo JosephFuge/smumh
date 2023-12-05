@@ -43,7 +43,7 @@ input[type="range"] {
     padding-right: 20px;
     padding-bottom: 20px;
     box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
-    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
+    font-family: Montserrat, Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
 }
 
 #surveytitle {
@@ -59,7 +59,7 @@ input[type="range"] {
     padding-right: 20px;
     padding-bottom: 45px;
     box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
-    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
+    font-family:Montserrat, Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
 }
 
 #non-scaleQuestions {
