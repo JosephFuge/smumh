@@ -13,6 +13,13 @@ datalist {
     margin: 0 auto;
 }
 
+.input-error-text {
+    margin: 0;
+    color: red;
+    font-size: 14px;
+    display: none;
+}
+
 option {
     padding: 0;
 }

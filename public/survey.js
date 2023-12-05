@@ -23,6 +23,20 @@ class SurveyData {
     }
 }
 
+// document.getElementById("age").addEventListener('input', function (event) {
+//     const value = parseInt(document.getElementById("age").value);
+//     if (Number.isNaN(value) || value < 8 || value > 130) {
+//         document.getElementById("age").value = value.toString().substring(0, value.toString().length - 1);
+//     }
+// });
+
+function ageOnChange() {
+    const value = parseInt(document.getElementById("age").value);
+    if (Number.isNaN(value) || value < 8 || value > 130) {
+        document.getElementById("age").value = value.toString().substring(0, value.toString().length - 1);
+    }
+}
+
 let surveyInfo = new SurveyData();
 
 function changePage(pageNum) {
@@ -53,16 +67,20 @@ function validateForm(pageNum) {
 
         if (!Number.isNaN(parseInt(ageElement.value))) {
             surveyInfo.age = parseInt(ageElement.value);
+            document.getElementById("ageError").style.display = "none";
         } else {
             validPage = false;
+            document.getElementById("ageError").style.display = "block";
             //TODO: Set Error Text
         }
 
         const genderElement = document.getElementById('gender');
         if (genderElement.value != 'select') {
             surveyInfo.gender = genderElement.value.substring(0, 1);
+            document.getElementById("genderError").style.display = "none";
         } else {
             validPage = false;
+            document.getElementById("genderError").style.display = "block";
             //TODO: Set Error Text
         }
 
@@ -70,16 +88,20 @@ function validateForm(pageNum) {
         const relationshipElement = document.getElementById('relationship-status');
         if (relationshipElement.value != 'select') {
             surveyInfo.relationship = relationshipElement.value;
+            document.getElementById("relationshipError").style.display = "none";
         } else {
             validPage = false;
+            document.getElementById("relationshipError").style.display = "block";
             //TODO: Set Error Text
         }
 
         const occupationElement = document.getElementById('occupation');
         if (occupationElement.value != 'select') {
             surveyInfo.occupation = occupationElement.value;
+            document.getElementById("occupationError").style.display = "none";
         } else {
             validPage = false;
+            document.getElementById("occupationError").style.display = "block";
             //TODO: Set Error Text
         }
 
@@ -93,6 +115,7 @@ function validateForm(pageNum) {
         */
         
         const organizationTypeElements = Array.from(document.getElementsByClassName('organization-type-checkbox')).map((element) => element.firstChild);
+        surveyInfo.organizationTypes.clear();
         for (let orgTypeElement of organizationTypeElements) {
             if (orgTypeElement.checked) {
                 surveyInfo.organizationTypes.add(orgTypeElement.value);
@@ -123,14 +146,18 @@ function validateForm(pageNum) {
 
         if (doesUseSocialMediaYesElement.checked) {
             surveyInfo.doesUseSocialMedia = true;
+            document.getElementById("useSocialMediaError").style.display = "none";
         } else if (doesUseSocialMediaNoElement.checked) {
             surveyInfo.doesUseSocialMedia = false;
+            document.getElementById("useSocialMediaError").style.display = "none";
         } else {
             validPage = false;
+            document.getElementById("useSocialMediaError").style.display = "block";
             // TODO: Set Error Text
         }
 
         const platformElements = Array.from(document.getElementsByClassName('platform-checkbox')).map((element) => element.firstChild);
+        surveyInfo.socialMediaPlatforms.clear();
         for (let tempPlatform of platformElements) {
             if (tempPlatform.checked) {
                 surveyInfo.socialMediaPlatforms.add(tempPlatform.value);
@@ -140,12 +167,12 @@ function validateForm(pageNum) {
         const averageTimeSpentElement = document.getElementById('averageTimeSpent');
         if (averageTimeSpentElement.value != 'select') {
             surveyInfo.averageTimeSpent = averageTimeSpentElement.value;
+            document.getElementById("averageTimeSpentError").style.display = "none";
         } else {
             validPage = false;
+            document.getElementById("averageTimeSpentError").style.display = "block";
             //TODO: Set Error Text
         }
-
-        // console.log("Valid page: " + validPage);
     } else if (pageNum === 2) {
         for (let i = 9; i <= 20; i++) {
             const scaleQuestionElement = document.getElementById(`scaleQ${i}`);
@@ -153,7 +180,5 @@ function validateForm(pageNum) {
         }
         console.log(surveyInfo)
     }
-
-    console.log("Valid page: " + validPage);
     return validPage;
 }

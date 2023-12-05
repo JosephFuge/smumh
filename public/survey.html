@@ -15,7 +15,8 @@
         <div id="non-scaleQuestions">
             <!-- Q1: AGE -->
             <label for="age"><h3 class="survey-question">What is your age?</h3></label>
-            <input type="number" id="age" name="age">
+            <input type="number" onchange="ageOnChange();" id="age" min="8" max="130" name="age">
+            <p class="input-error-text" id="ageError">Age must be a number between 8 and 130</p>
             <br>
 
             <!-- Q2: GENDER -->
@@ -27,6 +28,7 @@
                 <option value="nonbinary">Non-Binary</option>
                 <option value="other">Other</option>
             </select>
+            <p class="input-error-text" id="genderError">You must select a gender</p>
             <br>
             
             <!-- Q3: RELATIONSHIP STATUS -->
@@ -38,6 +40,7 @@
                 <option value="married">Married</option>
                 <option value="prefer-not-to-answer">Prefer not to answer</option>
             </select>
+            <p class="input-error-text" id="relationshipError">You must select a relationship status</p>
             <br>
 
             <!-- Q4: OCCUPATION STATUS -->
@@ -49,6 +52,7 @@
                 <option value="salariedworker">Salaried Worker</option>
                 <option value="retired">Retired</option>
             </select>
+            <p class="input-error-text" id="occupationError">You must select an occupation status</p>
             <br>
             
             <!-- Q5: ORGANIZATION AFFILIATION TYPES -->
@@ -70,6 +74,7 @@
             <input type="radio" id="useSocialMedia-no" name="useSocialMediaGroup" value="no">
             <label for="useSocialMedia-no">No</label>
             <br>
+            <p class="input-error-text" id="useSocialMediaError">You must select an option</p>
             
             <!-- Q7: SOCIAL MEDIA PLATFORMS -->
             <h3 class="survey-question">What social media platforms do you commonly use?</h3>
@@ -94,6 +99,7 @@
                 <option value="Between 4 and 5 hours">Between 4 and 5 hours</option>
                 <option value="More than 5 hours">More than 5 hours</option>
             </select>
+            <p class="input-error-text" id="averageTimeSpentError">You must select an option</p>
             <br>
             <br>
 
