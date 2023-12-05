@@ -35,8 +35,14 @@ function changePage(pageNum) {
         document.getElementById("non-scaleQuestions").style.display = "none";
         document.getElementById("nextButton").style.display = "none";
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function submitSurvey() {
+    if (validateForm(2)) {
+        // Send the form
     } else {
-        console.log('Invalid page number');
+        console.log('Bad page 2');
     }
 }
 
@@ -143,8 +149,9 @@ function validateForm(pageNum) {
     } else if (pageNum === 2) {
         for (let i = 9; i <= 20; i++) {
             const scaleQuestionElement = document.getElementById(`scaleQ${i}`);
-    
-        } 
+            surveyInfo[`q${i}`] = scaleQuestionElement.value;
+        }
+        console.log(surveyInfo)
     }
 
     console.log("Valid page: " + validPage);
