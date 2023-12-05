@@ -19,70 +19,98 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="./index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./survey.html">Survey</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="./index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="./survey.html">Survey</a></li>
                         <li class="nav-item"><a class="nav-link" href="./dashboard.html">Learn More</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
+    <form class="container px-7" id="surveytitle">
+        <div id="title" style="text-align: left;">
+            <h2>Provo Mental Health and Social Media Usage Survey</h2>
+        </div>
+    </form>
+    <a style="padding-bottom: 5px;"></a>
     <form class="container px-7" action="/submit-form" method="post" id="surveyForm" >
-
         <div id="non-scaleQuestions">
-            <!-- Q1: AGE -->
-            <label for="age"><h3 class="survey-question">What is your age?</h3></label>
-            <input type="number" onchange="ageOnChange();" id="age" min="8" max="130" name="age">
-            <p class="input-error-text" id="ageError">Age must be a number between 8 and 130</p>
-            <br>
-
-            <!-- Q2: GENDER -->
-            <label for="gender"><h3 class="survey-question">Gender:</h3></label>
-            <select id="gender" name="gender">
-                <option value="select">-- Select --</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="nonbinary">Non-Binary</option>
-                <option value="other">Other</option>
-            </select>
-            <p class="input-error-text" id="genderError">You must select a gender</p>
-            <br>
-            
-            <!-- Q3: RELATIONSHIP STATUS -->
-            <label for="relationship-status"><h3 class="survey-question">Relationship Status:</h3></label>
-            <select id="relationship-status" name="relationship_status">
-                <option value="select">-- Select --</option>
-                <option value="single">Single</option>
-                <option value="in_relationship">In a Relationship</option>
-                <option value="married">Married</option>
-                <option value="prefer-not-to-answer">Prefer not to answer</option>
-            </select>
-            <p class="input-error-text" id="relationshipError">You must select a relationship status</p>
-            <br>
-
-            <!-- Q4: OCCUPATION STATUS -->
-            <label for="occupation"><h3 class="survey-question">Occupation:</h3></label>
-            <select id="occupation" name="occupation">
-                <option value="select">-- Select --</option>
-                <option value="universitystudent">University Student</option>
-                <option value="schoolstudent">School Student</option>
-                <option value="salariedworker">Salaried Worker</option>
-                <option value="retired">Retired</option>
-            </select>
-            <p class="input-error-text" id="occupationError">You must select an occupation status</p>
+            <table>
+                <tr>
+                    <th>
+                        <!-- Q1: AGE -->
+                        <label for="age"><h5 class="survey-question" style="font-size: 1.15em;">What is your age?</h5></label>
+                    </th>
+                    <th>
+                        <!-- Q2: GENDER -->
+                        <label for="gender"><h5 class="survey-question" style="font-size: 1.15em;">Gender:</h5></label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- Q1: AGE -->
+                        <input type="number" onchange="ageOnChange();" id="age" min="8" max="130" name="age" style="height: 23px; width: 80%;">
+                    <p class="input-error-text" id="ageError">Age must be a number between 8 and 130</p>
+                    </td>
+                    <td>
+                        <select id="gender" name="gender" style="width: 80%;">
+                            <option value="select">-- Select --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="nonbinary">Non-Binary</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <p class="input-error-text" id="genderError">You must select a gender</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                       <!-- Q3: RELATIONSHIP STATUS -->
+                        <label for="relationship-status"><h5 class="survey-question" style="font-size: 1.15em;">Relationship Status:</h5></label> 
+                    </th>
+                    <th>
+                        <!-- Q4: OCCUPATION STATUS -->
+                        <label for="occupation"><h5 class="survey-question" style="font-size: 1.15em;">Occupation:</h5></label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- Q3: RELATIONSHIP STATUS -->
+                        <select id="relationship-status" name="relationship_status" style="width: 80%;">
+                            <option value="select">-- Select --</option>
+                            <option value="single">Single</option>
+                            <option value="in_relationship">In a Relationship</option>
+                            <option value="married">Married</option>
+                            <option value="prefer-not-to-answer">Prefer not to answer</option>
+                        </select>
+                        <p class="input-error-text" id="relationshipError">You must select a relationship status</p>
+                    </td>
+                    <td>
+                        <!-- Q4: OCCUPATION STATUS -->
+                        <select id="occupation" name="occupation" style="width: 80%;">
+                            <option value="select">-- Select --</option>
+                            <option value="universitystudent">University Student</option>
+                            <option value="schoolstudent">School Student</option>
+                            <option value="salariedworker">Salaried Worker</option>
+                            <option value="retired">Retired</option>
+                        </select>
+                        <p class="input-error-text" id="occupationError">You must select an occupation status</p>
+                    </td>
+                </tr>
+            </table>   
             <br>
             
             <!-- Q5: ORGANIZATION AFFILIATION TYPES -->
-            <h3 class="survey-question">What type of organizations are you affiliated with?</h3>
-            <label class="organization-type-checkbox"><input type="checkbox" name="optionUniversity" value="University">University</label>
-            <label class="organization-type-checkbox"><input type="checkbox" name="optionPrivate" value="Private">Private</label>
-            <label class="organization-type-checkbox"><input type="checkbox" name="optionSchool" value="School">School</label>
-            <label class="organization-type-checkbox"><input type="checkbox" name="optionGovernment" value="Government">Government</label>
-            <label class="organization-type-checkbox"><input type="checkbox" name="optionCompany" value="Company">Company</label>
-            <label class="organization-type-checkbox"><input type="checkbox" name="optionNA" value="N/A">N/A</label>
-            
-            
+            <h5 class="survey-question">What type of organizations are you affiliated with?</h5>
+            <label class="organization-type-checkbox"><input type="checkbox" name="optionUniversity" value="University"> University</label>
+            <label class="organization-type-checkbox"><input type="checkbox" name="optionPrivate" value="Private"> Private</label>
+            <label class="organization-type-checkbox"><input type="checkbox" name="optionSchool" value="School"> School</label>
+            <label class="organization-type-checkbox"><input type="checkbox" name="optionGovernment" value="Government"> Government</label>
+            <label class="organization-type-checkbox"><input type="checkbox" name="optionCompany" value="Company"> Company</label>
+            <label class="organization-type-checkbox"><input type="checkbox" name="optionNA" value="N/A"> N/A</label>
+            <p></p>
+
             <!-- Q6: DO YOU USE SOCIAL MEDIA -->
-            <h3 class="survey-question">Do you use social media?</h3>
+            <h5 class="survey-question">Do you use social media?</h5>
             <br>
             <input type="radio" id="useSocialMedia-yes" name="useSocialMediaGroup" value="yes">
             <label for="useSocialMedia-yes">Yes</label>
@@ -91,21 +119,23 @@
             <label for="useSocialMedia-no">No</label>
             <br>
             <p class="input-error-text" id="useSocialMediaError">You must select an option</p>
-            
+            <p></p>
+
             <!-- Q7: SOCIAL MEDIA PLATFORMS -->
-            <h3 class="survey-question">What social media platforms do you commonly use?</h3>
-            <label class="platform-checkbox"><input type="checkbox" name="optionFacebook" value="Facebook">Facebook</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionInstagram" value="Instagram">Instagram</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionTwitter" value="Twitter">Twitter</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionTikTok" value="TikTok">TikTok</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionYouTube" value="YouTube">YouTube</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionReddit" value="Reddit">Reddit</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionSnapchat" value="Snapchat">Snapchat</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionDiscord" value="Discord">Discord</label>
-            <label class="platform-checkbox"><input type="checkbox" name="optionPinterest" value="Pinterest">Pinterest</label>
+            <h5 class="survey-question">What social media platforms do you commonly use?</h5>
+            <label class="platform-checkbox"><input type="checkbox" name="optionFacebook" value="Facebook"> Facebook</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionInstagram" value="Instagram"> Instagram</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionTwitter" value="Twitter"> Twitter</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionTikTok" value="TikTok"> TikTok</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionYouTube" value="YouTube"> YouTube</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionReddit" value="Reddit"> Reddit</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionSnapchat" value="Snapchat"> Snapchat</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionDiscord" value="Discord"> Discord</label>
+            <label class="platform-checkbox"><input type="checkbox" name="optionPinterest" value="Pinterest"> Pinterest</label>
+            <p></p>
 
             <!-- Q8: AVERAGE TIME SPENT ON SOCIAL MEDIA -->
-            <h3 class="survey-question">What is the average time you spend on social media every day?</h3>
+            <h5 class="survey-question">What is the average time you spend on social media every day?</h5>
             <select id="averageTimeSpent" name="averageTimeSpent">
                 <option value="select">-- Select --</option>
                 <option value="Less than an hour">Less than an hour</option>
@@ -124,9 +154,16 @@
 
         <div id="scaleQuestions">
             <!-- Q9: USING SOCIAL WITHOUT PURPOSE -->
-            <h3 class="survey-question">How often do you find yourself using Social media without a specific purpose?</h3>    
+            <h5 class="survey-question">How often do you find yourself using Social media without a specific purpose?</h5>    
             <div class="scale-group">
-                <label>On a scale of 1 to 5:</label><br>
+                <p></p>
+                <div class="scale-labels">
+                    <span>Never</span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span>Always</span>
+                </div>
                 <input type="range" id="scaleQ9" name="scale" min="1" max="5" step="1">
                 <div class="scale-labels">
                     <span>1</span>
@@ -136,10 +173,10 @@
                     <span>5</span>
                 </div>
             </div>
-            
+            <br>
 
             <!-- Q10: DISTRACTED BY SOCIAL MEDIA -->
-            <h3 class="survey-question">How often do you get distracted by Social media when you are busy doing something?</h3>    
+            <h5 class="survey-question">How often do you get distracted by Social media when you are busy doing something?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ10" name="scale" min="1" max="5" step="1">
@@ -153,7 +190,7 @@
             </div>
 
             <!-- Q11: RESTLESS WITHOUT SOCIAL MEDIA -->
-            <h3 class="survey-question">Do you feel restless if you haven't used Social media in a while?</h3>    
+            <h5 class="survey-question">Do you feel restless if you haven't used Social media in a while?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ11" name="scale" min="1" max="5" step="1">
@@ -167,7 +204,7 @@
             </div>
             
             <!-- Q12: HOW EASILY DISTRACTED -->
-            <h3 class="survey-question">On a scale of 1 to 5, how easily distracted are you?</h3>    
+            <h5 class="survey-question">On a scale of 1 to 5, how easily distracted are you?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ12" name="scale" min="1" max="5" step="1">
@@ -181,7 +218,7 @@
             </div>
 
             <!-- Q13: HOW BOTHERED BY WORRIES -->
-            <h3 class="survey-question">On a scale of 1 to 5, how much are you bothered by worries?</h3>    
+            <h5 class="survey-question">On a scale of 1 to 5, how much are you bothered by worries?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ13" name="scale" min="1" max="5" step="1">
@@ -195,7 +232,7 @@
             </div>
 
             <!-- Q14: DIFFICULT TO CONCENTRATE -->
-            <h3 class="survey-question">Do you find it difficult to concentrate on things?</h3>    
+            <h5 class="survey-question">Do you find it difficult to concentrate on things?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ14" name="scale" min="1" max="5" step="1">
@@ -209,7 +246,7 @@
             </div>        
 
             <!-- Q15: HOW OFTEN DO YOU COMPARE -->
-            <h3 class="survey-question">On a scale of 1-5, how often do you compare yourself to other successful people through the use of social media?</h3>    
+            <h5 class="survey-question">On a scale of 1-5, how often do you compare yourself to other successful people through the use of social media?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ15" name="scale" min="1" max="5" step="1">
@@ -223,7 +260,7 @@
             </div>
 
             <!-- Q16: HOW DO YOU FEEL ABOUT COMPARISONS -->
-            <h3 class="survey-question">Following the previous question, how do you feel about these comparisons, generally speaking?</h3>    
+            <h5 class="survey-question">Following the previous question, how do you feel about these comparisons, generally speaking?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ16" name="scale" min="1" max="5" step="1">
@@ -237,7 +274,7 @@
             </div>
 
             <!-- Q17: VALIDATION FROM SOCIAL MEDIA -->
-            <h3 class="survey-question">How often do you look to seek validation from features of social media?</h3>    
+            <h5 class="survey-question">How often do you look to seek validation from features of social media?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ17" name="scale" min="1" max="5" step="1">
@@ -251,7 +288,7 @@
             </div>
 
             <!-- Q18: DEPRESSED OR DOWN -->
-            <h3 class="survey-question">How often do you feel depressed or down?</h3>    
+            <h5 class="survey-question">How often do you feel depressed or down?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ18" name="scale" min="1" max="5" step="1">
@@ -265,7 +302,7 @@
             </div>
 
             <!-- Q19: INTEREST IN DAILY ACTIVITIES -->
-            <h3 class="survey-question">On a scale of 1 to 5, how frequently does your interest in daily activities fluctuate?</h3>    
+            <h5 class="survey-question">On a scale of 1 to 5, how frequently does your interest in daily activities fluctuate?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ19" name="scale" min="1" max="5" step="1">
@@ -278,7 +315,7 @@
                 </div>
             </div>
             <!-- Q20: SLEEP ISSUES -->
-            <h3 class="survey-question">On a scale of 1 to 5, how often do you face issues regarding sleep?</h3>    
+            <h5 class="survey-question">On a scale of 1 to 5, how often do you face issues regarding sleep?</h5>    
             <div class="scale-group">
                 <label>On a scale of 1 to 5:</label><br>
                 <input type="range" id="scaleQ20" name="scale" min="1" max="5" step="1">
@@ -298,7 +335,7 @@
     </form>
     <p></p>
     <!-- Footer-->
-    <footer class="py-5" style="background-color: #00a0e0c4;">
+    <footer class="py-3" style="background-color: #00a0e0c4;">
         <div class="container px-4 px-lg-5"><p class="m-0 text-center text-white">Copyright &copy; BYU Provo SMU MH 2023</p></div>
     </footer>
     <!-- Bootstrap core JS-->

@@ -44,7 +44,7 @@ function changePage(pageNum) {
         document.getElementById("scaleQuestions").style.display = "none";
         document.getElementById("non-scaleQuestions").style.display = "block";
         document.getElementById("nextButton").style.display = "inline-block";
-    } else if (pageNum === 2 && validateForm(1)) {
+    } else if (pageNum === 2 /*&& validateForm(1)*/) {
         document.getElementById("scaleQuestions").style.display = "block";
         document.getElementById("non-scaleQuestions").style.display = "none";
         document.getElementById("nextButton").style.display = "none";
