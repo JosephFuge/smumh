@@ -32,21 +32,21 @@ function getSurveyInfoList(pageNum) {
 }
 
 // let tableBody = document.getElementById('surveyTable').getElementsByTagName('tbody')[0];
-function populateTable(tableBody) {
-    const surveyList = getSurveyInfoList();
+// function populateTable(tableBody) {
+//     const surveyList = getSurveyInfoList();
 
-    surveyList.forEach(survey => {
-        let row = tableBody.insertRow();
-        row.insertCell(0).innerHTML = survey.age;
-        row.insertCell(1).innerHTML = survey.gender;
-        row.insertCell(2).innerHTML = survey.relationship;
-        row.insertCell(3).innerHTML = survey.occupation;
-        row.insertCell(4).innerHTML = Array.from(survey.organizationTypes).join(', ');
-        row.insertCell(5).innerHTML = survey.doesUseSocialMedia ? 'Yes' : 'No';
-        row.insertCell(6).innerHTML = Array.from(survey.socialMediaPlatforms).join(', ');
-        row.insertCell(7).innerHTML = survey.averageTimeSpent;
-        for (let questionIndex = 8; questionIndex < 20; questionIndex++) {
-            row.insertCell(questionIndex).innerHTML = survey[`q${questionIndex + 1}`];
-        }
-    });
-}
+//     surveyList.forEach(survey => {
+//         let row = tableBody.insertRow();
+//         row.insertCell(0).innerHTML = survey.age;
+//         row.insertCell(1).innerHTML = survey.gender;
+//         row.insertCell(2).innerHTML = survey.relationship;
+//         row.insertCell(3).innerHTML = survey.occupation;
+//         row.insertCell(4).innerHTML = Array.from(survey.organizationTypes).join(', ');
+//         row.insertCell(5).innerHTML = survey.doesUseSocialMedia ? 'Yes' : 'No';
+//         row.insertCell(6).innerHTML = Array.from(survey.socialMediaPlatforms).join(', ');
+//         row.insertCell(7).innerHTML = survey.averageTimeSpent;
+//         for (let questionIndex = 8; questionIndex < 20; questionIndex++) {
+//             row.insertCell(questionIndex).innerHTML = survey[`q${questionIndex + 1}`];
+//         }
+//     });
+// }

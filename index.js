@@ -23,29 +23,40 @@ app.get("/index", (req, res) => {
 // Frontend static middleware
 // app.use(express.static('public'));
 
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
+// app.set('views', './public');
 
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-app.use(express.urlencoded({extended: true}));
+function getSurveyInfoList(pageNum) {
+  const orgTypeSet = new Set(['University', 'Private', 'Government', 'Organization']);
+  const platformSet = new Set(['Youtube', 'Instagram']);
+  const testSurvey1 = new SurveyData(18, 'M', 'Single', 'University Student', orgTypeSet, true, platformSet, 'Between 1 and 2 hours', 2, 3, 1, 4, 3, 5, 2, 3, 5, 4, 2, 1);
+  const testSurvey2 = new SurveyData();
+  const testSurveys = [testSurvey1, testSurvey2];
 
-apiRouter.get('/fetchResponses', async (req, res) => {
+  return testSurveys;
+}
+
+app.get('/responses', async (req, res) => {
   const pageNumber = req.body['pageNum'];
   const pageSize = req.body['pageSize'];
 
-  if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
-    res.status(400).json({message: 'Page number or page size is invalid'});
-  } else {
-    knex.select().from("Response").then((response) => {
-      res.json(response);
-  });
-  }
+  res.render('public/admin/responses', {responses: getSurveyInfoList()});
+
+  // if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
+  //   res.status(400).json({message: 'Page number or page size is invalid'});
+  // } else {
+  //   knex.select().from("Response").then((response) => {
+      
+  //   });
+  // }
 });
 
 // API listener middleware
-const apiRouter = express.Router();
-app.use(`/api`, apiRouter);
+// const apiRouter = express.Router();
+// app.use(`/api`, apiRouter);
 
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    <script type="text/javascript" src="../survey.js"></script>
+    <script type="text/javascript" src="./responsedata.js"></script>
+    <title>SMUMH Survey Responses</title>
+</head>
+<body onload="populateTable(document.getElementById('surveyTable').getElementsByTagName('tbody')[0]);">
+    <table id="surveyTable" border="1">
+        <thead>
+            <tr>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Relationship</th>
+                <th>Occupation</th>
+                <th>Organization Types</th>
+                <th>Uses Social Media</th>
+                <th>Social Media Platforms</th>
+                <th>Average Time Spent</th>
+                <th>Q9</th>
+                <th>Q10</th>
+                <th>Q11</th>
+                <th>Q12</th>
+                <th>Q13</th>
+                <th>Q14</th>
+                <th>Q15</th>
+                <th>Q16</th>
+                <th>Q17</th>
+                <th>Q18</th>
+                <th>Q19</th>
+                <th>Q20</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let iCount = 0; iCount < responses.length; iCount++) { %>
+                <tr>
+                  <td><%= responses[iCount].age %></td>
+                  <td><%= responses[iCount].gender %></td>
+                  <td><%= responses[iCount].relationship %></td>
+                  <td><%= responses[iCount].occupation %></td>
+                  <td><%= responses[iCount].age %></td>
+                  <!-- <td style="text-align: center;"><%= responses[iCount].organizationTypes.join(', ') %></td> -->
+                  <td style="text-align: center;"><%= responses[iCount].doesUseSocialMedia ? 'Yes' : 'No'; %></td>
+                  <td><%= responses[iCount].age %></td>
+                  <!-- <td style="text-align: center;"><%= Array.from(responses[iCount].socialMediaPlatforms).join(', ') %></td> -->
+                  <td style="text-align: center;"><%= responses[iCount].averageTimeSpent %></td>
+                  <% for (let questionIndex = 0; questionIndex < responses.length; questionIndex++) { %>
+                  <td style="text-align: center;">
+                    <%= responses[iCount][`q${questionIndex}`] %>
+                  </td>
+                  <% } %>
+                </tr>
+             <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
