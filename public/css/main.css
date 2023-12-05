@@ -6,14 +6,6 @@ body {
     flex-direction: column;
 }
 
-datalist {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 200px;
-    margin: 0 auto;
-}
-
 .input-error-text {
     margin: 0;
     color: red;
@@ -93,15 +85,17 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .rounded-button {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border-radius: 32px;
-    border: 4px #00A2E0 solid;
+    border: 2px #00A2E0 solid;
     background-color: white;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
+    width: fit-content;
+    height: fit-content;
     color: #00A2E0;
     cursor: pointer;
 }
@@ -118,7 +112,7 @@ input[type="range"]::-webkit-slider-thumb {
     }
 
     to {
-        box-shadow: 0px 0px 10px 5px #86ddff;
+        box-shadow: 0px 0px 1.5px 2px #86ddff;
     }
 }
 
