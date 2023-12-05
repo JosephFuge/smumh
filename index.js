@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const SurveyData = require("./shared/SurveyData.js");
 let path = require("path");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
@@ -7,12 +8,12 @@ app.use(express.urlencoded({extended: true}));
 const knex = require("knex")({
   client: "pg",
   connection: {
-    host: process.env.RDS_HOSTNAME || "localhost",
-    user: process.env.RDS_USERNAME || "postgres",
-    password: process.env.RDS_PASSWORD || "postgres",
+    host: process.env.RDS_HOSTNAME || "awseb-e-h9iqh6mffe-stack-awsebrdsdatabase-dmmrvpxyf7gh.ciiiun5cmpps.us-east-1.rds.amazonaws.com",
+    user: process.env.RDS_USERNAME || "ebroot",
+    password: process.env.RDS_PASSWORD || "Section4Group9Admin!",
     database: process.env.RDS_DB_NAME || "intex",
     port: process.env.RDS_PORT || 5432,
-    ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
+    ssl: true /*process.env.DB_SSL*/ ? {rejectUnauthorized: false} : false
   }
 });
 
@@ -21,38 +22,44 @@ app.get("/index", (req, res) => {
 });
 
 // Frontend static middleware
-// app.use(express.static('public'));
+app.use(express.static('public'));
 
-// app.set("view engine", "ejs");
-// app.set('views', './public');
+app.use('/shared', express.static(path.join(__dirname, 'shared')));
 
-app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
-});
+app.set("view engine", "ejs");
 
-function getSurveyInfoList(pageNum) {
+// app.use((_req, res) => {
+//   res.sendFile('index.html', { root: 'public' });
+// });
+
+async function getSurveyInfoList(pageNum) {
   const orgTypeSet = new Set(['University', 'Private', 'Government', 'Organization']);
   const platformSet = new Set(['Youtube', 'Instagram']);
   const testSurvey1 = new SurveyData(18, 'M', 'Single', 'University Student', orgTypeSet, true, platformSet, 'Between 1 and 2 hours', 2, 3, 1, 4, 3, 5, 2, 3, 5, 4, 2, 1);
   const testSurvey2 = new SurveyData();
   const testSurveys = [testSurvey1, testSurvey2];
 
-  return testSurveys;
+  const surveyResults = await knex.select().from("response");
+
+  return surveyResults;
 }
 
-app.get('/responses', async (req, res) => {
+app.get('/responses', async (req, res, next) => {
+  console.log(`Views directory: ${app.get('views')}`);
+  console.log(`View engine: ${app.get('view engine')}`);
+
   const pageNumber = req.body['pageNum'];
   const pageSize = req.body['pageSize'];
 
-  res.render('public/admin/responses', {responses: getSurveyInfoList()});
+  const surveyResponses = await getSurveyInfoList();
 
-  // if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
-  //   res.status(400).json({message: 'Page number or page size is invalid'});
-  // } else {
-  //   knex.select().from("Response").then((response) => {
-      
-  //   });
-  // }
+  res.render('responses', {responses: surveyResponses});
+
+  if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
+    res.status(400).json({message: 'Page number or page size is invalid'});
+  } else {
+    
+  }
 });
 
 // API listener middleware

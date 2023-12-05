@@ -1,0 +1,12 @@
+
+th {
+    border-width: 2px;
+}
+
+.response-page {
+    display: none;
+}
+
+.page-0 {
+    display: table-row;
+}
