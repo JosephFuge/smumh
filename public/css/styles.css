@@ -23,6 +23,10 @@
   color: black
 }
 
+.card:hover {
+  background-color: rgba(218, 217, 217, 0.36)
+}
+
 a:link {
   text-decoration: none;
 }
