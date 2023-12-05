@@ -2,16 +2,7 @@ body {
     display: flex;
     background-color: #EEEEEE;
     justify-content: center;
-    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
     flex-direction: column;
-}
-
-datalist {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 200px;
-    margin: 0 auto;
 }
 
 .input-error-text {
@@ -46,13 +37,13 @@ input[type="range"] {
     align-items: center;
     background-color: white;
     width: 800px;
-    /*border-top: 8px #3EBF33 solid;*/
     border-radius: 8px;
     padding-top: 40px;
     padding-left: 45px;
     padding-right: 20px;
     padding-bottom: 20px;
     box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
 }
 
 #surveytitle {
@@ -68,6 +59,7 @@ input[type="range"] {
     padding-right: 20px;
     padding-bottom: 45px;
     box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif;
 }
 
 #non-scaleQuestions {
@@ -93,15 +85,17 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .rounded-button {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border-radius: 32px;
-    border: 4px #00A2E0 solid;
+    border: 2px #00A2E0 solid;
     background-color: white;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
+    width: fit-content;
+    height: fit-content;
     color: #00A2E0;
     cursor: pointer;
 }
@@ -118,7 +112,7 @@ input[type="range"]::-webkit-slider-thumb {
     }
 
     to {
-        box-shadow: 0px 0px 10px 5px #86ddff;
+        box-shadow: 0px 0px 1.5px 2px #86ddff;
     }
 }
 
