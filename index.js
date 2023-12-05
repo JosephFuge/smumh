@@ -18,10 +18,31 @@ const knex = require("knex")({
 
 app.get("/index", (req, res) => {
    res.render("index");
-})
+});
 
 // Frontend static middleware
-app.use(express.static('public'));
+// app.use(express.static('public'));
+
+app.set("view engine", "ejs");
+
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+app.use(express.urlencoded({extended: true}));
+
+apiRouter.get('/fetchResponses', async (req, res) => {
+  const pageNumber = req.body['pageNum'];
+  const pageSize = req.body['pageSize'];
+
+  if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
+    res.status(400).json({message: 'Page number or page size is invalid'});
+  } else {
+    knex.select().from("Response").then((response) => {
+      res.json(response);
+  });
+  }
+});
 
 // API listener middleware
 const apiRouter = express.Router();
