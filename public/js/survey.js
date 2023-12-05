@@ -23,9 +23,11 @@ function changePage(pageNum) {
 
 function submitSurvey() {
     if (validateForm(2)) {
-        // Send the form
-    } else {
-        console.log('Bad page 2');
+        fetch('/api/createSurvey', {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify(surveyInfo)
+        });
     }
 }
 
@@ -118,7 +120,6 @@ function validateForm(pageNum) {
             const scaleQuestionElement = document.getElementById(`scaleQ${i}`);
             surveyInfo[`q${i}`] = scaleQuestionElement.value;
         }
-        console.log(surveyInfo)
     }
     return validPage;
 }

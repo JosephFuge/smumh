@@ -44,7 +44,7 @@ async function getSurveyInfoList(pageNum) {
   return surveyResults;
 }
 
-app.get('/responses', async (req, res, next) => {
+app.get('/admin', async (req, res, next) => {
   console.log(`Views directory: ${app.get('views')}`);
   console.log(`View engine: ${app.get('view engine')}`);
 
@@ -63,7 +63,20 @@ app.get('/responses', async (req, res, next) => {
 });
 
 // API listener middleware
-// const apiRouter = express.Router();
-// app.use(`/api`, apiRouter);
+const apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+apiRouter.post('/createSurvey', async (req, res) => {
+  // Validate survey input
+  if (req.body['age'] && req.body['gender'] && req.body['relationship'] && req.body['occupation'] && req.body['organizationTypes'] && req.body['doesUseSocialMedia']
+  && req.body['socialMediaPlatforms'] && req.body['averageTimeSpent'] && req.body['q9'] && req.body['q10'] && req.body['q11'] && req.body['q12'] && req.body['q14']
+  && req.body['q13'] && req.body['q14'] && req.body['q15'] && req.body['q16'] && req.body['q17'] && req.body['q18'] && req.body['q19'] && req.body['q20']) {
+      await knex('responses').insert(req.body);
+
+      res.status(201).json({message: 'Success'});
+  } else {
+      res.status(400).json({message: 'Survey is missing data'});
+  }
+});
 
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));
