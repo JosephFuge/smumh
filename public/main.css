@@ -1,15 +1,124 @@
+body {
+    display: flex;
+    background-color: #EEEEEE;
+    justify-content: center;
+    font-family: Calibri, 'Gill Sans', 'Gill Sans MT',  'Trebuchet MS', sans-serif
+}
+
 datalist {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 200px;
-  }
-  
-  option {
-    padding: 0;
-  }
-  
-  input[type="range"] {
-    width: 200px;
+    margin: 0 auto;
+}
+
+.input-error-text {
     margin: 0;
-  }
+    color: red;
+    font-size: 14px;
+    display: none;
+}
+
+option {
+    padding: 0;
+}
+
+input[type="range"] {
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+#surveyForm {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 600px;
+    border: 4px #3EBF33 solid;
+    border-radius: 32px;
+    padding: 16px;
+    box-shadow: 0px 0px 5px 2px #111111;
+}
+
+#non-scaleQuestions {
+    text-align: left;
+}
+
+#scaleQuestions {
+    display: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: transparent; /* Optional: makes the track transparent */
+}
+  
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Removes default styling */
+    appearance: none;
+    margin-top: 0; /* Adjust thumb position to cover the track */
+}
+
+#previousButton {
+    margin-right: 24px;
+}
+
+.rounded-button {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 32px;
+    border: 4px #00A2E0 solid;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18px;
+    color: #00A2E0;
+    cursor: pointer;
+}
+
+.rounded-button:hover, .rounded-button:focus {
+    animation-name: buttonGlow;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes buttonGlow {
+    from {
+        box-shadow: 0px 0px 0px 0px #86ddff;
+    }
+
+    to {
+        box-shadow: 0px 0px 10px 5px #86ddff;
+    }
+}
+
+.platform-checkbox, .organization-type-checkbox {
+    display: block;
+}
+
+.survey-question {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.scale-group {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 24px;
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 200px; /* This should match the width of your input[type="range"] */
+    margin: 0 auto;
+}
+
+/* .scale-labels span {
+    text-align: center;
+    flex: 1;
+} */
