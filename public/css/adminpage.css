@@ -1,6 +1,10 @@
+table {
+   margin-top: 10px; 
+}
 
-th {
-    border-width: 2px;
+thead {
+    border-bottom-color: rgb(57, 55, 55);
+    border-bottom-width: 2px;
 }
 
 .response-page {
@@ -9,4 +13,7 @@ th {
 
 .page-0 {
     display: table-row;
+}
+button {
+    margin-right: 5px;
 }
