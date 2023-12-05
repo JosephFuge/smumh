@@ -100,6 +100,10 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
 }
 
+button:hover{
+background-color: #00a0e025;
+}
+
 .rounded-button:hover, .rounded-button:focus {
     animation-name: buttonGlow;
     animation-duration: 0.5s;
