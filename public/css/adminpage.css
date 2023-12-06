@@ -1,6 +1,10 @@
+table {
+   margin-top: 10px; 
+}
 
-th {
-    border-width: 2px;
+thead {
+    border-bottom-color: rgb(57, 55, 55);
+    border-bottom-width: 2px;
 }
 
 .response-page {
@@ -81,4 +85,12 @@ input {
 
 .submit-button:hover {
     background-color: #45a049;
+}
+
+button {
+    margin-right: 5px;
+}
+
+.nav-link:hover {
+    cursor: pointer;
 }

@@ -28,15 +28,23 @@ function checkPassword() {
 }
     
 function showAdminCreate() {
-    document.getElementById("createUser").style.display = ""
-    document.getElementById("showTable").style.display = "none"
-    document.getElementById("viewSurveyButton").style.fontWeight = ""
-    document.getElementById("viewUsersButton").style.fontWeight = "bold"
+    document.getElementById("createUser").style.display = "";
+    document.getElementById("showTable").style.display = "none";
+    document.getElementById("viewSurveyButton").style.fontWeight = "";
+    document.getElementById("viewUsersButton").style.fontWeight = "bold";
 }
 
 function showSurveyData() {
-    document.getElementById("createUser").style.display = "none"
-    document.getElementById("showTable").style.display = ""
-    document.getElementById("viewSurveyButton").style.fontWeight = "bold"
-    document.getElementById("viewUsersButton").style.fontWeight = ""
+    document.getElementById("createUser").style.display = "none";
+    document.getElementById("showTable").style.display = "";
+    document.getElementById("viewSurveyButton").style.fontWeight = "bold";
+    document.getElementById("viewUsersButton").style.fontWeight = "";
+}
+
+function clearInput() {
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("confirmPassword").value = "";
+    document.getElementById("showPasswords").checked = false;
 }
