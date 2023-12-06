@@ -44,7 +44,13 @@ async function getSurveyInfoList(pageNum) {
   return surveyResults;
 }
 
-app.get('/responses', async (req, res, next) => {
+app.get("/admin", (req, res) => {
+  knex.select().from("response").then(surveyResponses => {
+    res.render("responses", {responses: surveyResponses})
+  })
+})
+
+/*app.get('/responses', async (req, res, next) => {
   console.log(`Views directory: ${app.get('views')}`);
   console.log(`View engine: ${app.get('view engine')}`);
 
@@ -60,7 +66,7 @@ app.get('/responses', async (req, res, next) => {
   } else {
     
   }
-});
+});*/
 
 // API listener middleware
 // const apiRouter = express.Router();
