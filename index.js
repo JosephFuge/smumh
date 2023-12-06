@@ -12,9 +12,9 @@ const knex = require("knex")({
     host: process.env.RDS_HOSTNAME || "awseb-e-h9iqh6mffe-stack-awsebrdsdatabase-dmmrvpxyf7gh.ciiiun5cmpps.us-east-1.rds.amazonaws.com",
     user: process.env.RDS_USERNAME || "ebroot",
     password: process.env.RDS_PASSWORD || "Section4Group9Admin!",
-    database: process.env.RDS_DB_NAME || "intex",
+    database: "intex",
     port: process.env.RDS_PORT || 5432,
-    ssl: true /*process.env.DB_SSL*/ ? {rejectUnauthorized: false} : false
+    ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
   }
 });
 
@@ -47,7 +47,29 @@ async function getSurveyInfoList(pageNum) {
   return surveyResults;
 }
 
-app.get('/admin', async (req, res, next) => {
+app.get("/admin", (req, res) => {
+  knex.select().from("response").then(surveyResponses => {
+    res.render("responses", {responses: surveyResponses})
+  })
+})
+
+app.get("/", (req, res) => {
+  res.render("index");
+})
+
+app.get("/survey", (req, res) => {
+  res.render("survey");
+})
+
+app.get("/dashboard", (req, res) => {
+  res.render("dashboard");
+})
+
+app.get("/login", (req, res) => {
+  res.render("login");
+})
+
+/*app.get('/admin', async (req, res, next) => {
 
   // const pageNumber = req.body['pageNum'];
   // const pageSize = req.body['pageSize'];
@@ -61,7 +83,7 @@ app.get('/admin', async (req, res, next) => {
   // } else {
     
   // }
-});
+});*/
 
 // API listener middleware
 const apiRouter = express.Router();
