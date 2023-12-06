@@ -50,6 +50,22 @@ app.get("/admin", (req, res) => {
   })
 })
 
+app.get("/", (req, res) => {
+  res.render("index");
+})
+
+app.get("/survey", (req, res) => {
+  res.render("survey");
+})
+
+app.get("/dashboard", (req, res) => {
+  res.render("dashboard");
+})
+
+app.get("/login", (req, res) => {
+  res.render("login");
+})
+
 /*app.get('/responses', async (req, res, next) => {
   console.log(`Views directory: ${app.get('views')}`);
   console.log(`View engine: ${app.get('view engine')}`);
