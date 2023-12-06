@@ -28,6 +28,8 @@ app.get("/index", (req, res) => {
 // Frontend static middleware
 app.use(express.static('public'));
 
+app.use(express.json());
+
 app.use('/shared', express.static(path.join(__dirname, 'shared')));
 
 app.use('/admin', checkAuth);
@@ -84,10 +86,22 @@ async function checkAuth (req, res, next) {
   }
 }
 
+apiRouter.post('/login', async (req, res) => {
+  const user = await getUser(req.body.username);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.Password)) {
+      setAuthCookie(res, user.AuthToken);
+      res.send({ username: user.Username });
+      return;
+    }
+  }
+  res.status(401).send({ message: 'Invalid username or password' });
+});
+
 const secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
-secureApiRouter.use(checkAuth);
+secureApiRouter.use('/api/auth', checkAuth);
 
 async function getUserByToken(authToken) {
   const resultUser = await knex.select('Username').from('authorization').whereRaw('AuthToken = ?', [authToken]);
@@ -134,18 +148,6 @@ apiRouter.post('/auth/create', async (req, res) => {
       username: user.Username,
     });
   }
-});
-
-app.post('/auth/login', async (req, res) => {
-  const user = await getUser(req.body.username);
-  if (user) {
-    if (await bcrypt.compare(req.body.password, user.Password)) {
-      setAuthCookie(res, user.AuthToken);
-      res.send({ username: user.Username });
-      return;
-    }
-  }
-  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 apiRouter.delete('/auth/logout', (_req, res) => {

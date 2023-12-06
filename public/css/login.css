@@ -59,3 +59,8 @@ button {
 button:hover {
     background-color: #0186ba;
 }
+
+.login-error-text {
+    color: red;
+    display: none;
+}
