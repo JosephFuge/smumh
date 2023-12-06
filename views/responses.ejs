@@ -8,7 +8,7 @@
     <script type="text/javascript" src="admin/responsedata.js"></script>
     <title>SMUMH Survey Responses</title>
 </head>
-<body>
+<body onload="showSurveyData()">
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container px-5">
@@ -25,57 +25,97 @@
             </div>
         </div>
     </nav>
-    <button type="button" onclick="changePage(currentPage - 1)">PREVIOUS</button>
-    <button type="button" onclick="changePage(currentPage + 1)">NEXT</button>
-    <table id="surveyTable" border="1">
-        <thead>
-            <tr>
-                <th>Response ID</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Relationship</th>
-                <th>Occupation</th>
-                <th>Organization Types</th>
-                <th>Uses Social Media</th>
-                <th>Social Media Platforms</th>
-                <th>Average Time Spent</th>
-                <th>Q9</th>
-                <th>Q10</th>
-                <th>Q11</th>
-                <th>Q12</th>
-                <th>Q13</th>
-                <th>Q14</th>
-                <th>Q15</th>
-                <th>Q16</th>
-                <th>Q17</th>
-                <th>Q18</th>
-                <th>Q19</th>
-                <th>Q20</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for (let iCount = 0; iCount < responses.length; iCount++) { %>
-                <tr class="page-<%= Math.floor(iCount / 25) %> response-page">
-                  <td><%= responses[iCount].ResponseID %></td>  
-                  <td><%= responses[iCount].Age %></td>
-                  <td><%= responses[iCount].Gender %></td>
-                  <td><%= responses[iCount].Relationship %></td>
-                  <td><%= responses[iCount].Occupation %></td>
-                  <td><%= responses[iCount].Age %></td>
-                  <td style="text-align: center;"><%= responses[iCount].doesUseSocialMedia ? 'Yes' : 'No'; %></td>
-                  <td><%= responses[iCount].Age %></td>
-                  <td style="text-align: center;"><%= responses[iCount].AvgTimePerDay %></td>
-                  <% for (let questionIndex = 9; questionIndex <= 20; questionIndex++) { %>
-                  <td style="text-align: center;">
-                    <%= responses[iCount][`Q${questionIndex}`] %>
-                  </td>
-                  <% } %>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #00a0e089;">
+        <div class="container px-3">
+            <h5 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding-top: 10px; font-weight: bold; color: white;">Admin Tools</h5>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a id="viewSurveyButton" class="nav-link subbar" style="color:white" onclick="showSurveyData()">View Survey Data</a></li>
+                    <li class="nav-item"><a id="viewUsersButton" class="nav-link subbar" style="color:white" onclick="showAdminCreate()">Manage Users</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br>
+    <div id="createUser" class="test-div">
+        <form action="/submit_user" method="post" onsubmit="return checkPassword()">
+            <legend style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: bold;">Create new admin user:</legend>
+            <!-- Username Field -->
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <!-- Password Field with Toggle -->
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <!-- Confirm Password Field with Toggle -->
+            <label for="confirmPassword">Confirm Password: </label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <label for="showPasswords">Show Passwords</label>
+            <input style="float: left;" id="showPasswords" type="checkbox" onchange="togglePassword('password'); togglePassword('confirmPassword')">
+
+            <!-- Submit Button -->
+            <button class="submit-button" type="submit">Create User</button>
+        </form>
+        <br><br><br>
+    </div>
+    <div id="showTable">
+        <button type="button" onclick="changePage(currentPage - 1)">PREVIOUS</button>
+        <button type="button" onclick="changePage(currentPage + 1)">NEXT</button>
+        <table id="surveyTable" border="1">
+            <thead>
+                <tr>
+                    <th>Response ID</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Relationship</th>
+                    <th>Occupation</th>
+                    <th>Organization Types</th>
+                    <th>Uses Social Media</th>
+                    <th>Social Media Platforms</th>
+                    <th>Average Time Spent</th>
+                    <th>Q9</th>
+                    <th>Q10</th>
+                    <th>Q11</th>
+                    <th>Q12</th>
+                    <th>Q13</th>
+                    <th>Q14</th>
+                    <th>Q15</th>
+                    <th>Q16</th>
+                    <th>Q17</th>
+                    <th>Q18</th>
+                    <th>Q19</th>
+                    <th>Q20</th>
                 </tr>
-             <% } %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% for (let iCount = 0; iCount < responses.length; iCount++) { %>
+                    <tr class="page-<%= Math.floor(iCount / 25) %> response-page">
+                      <td><%= responses[iCount].ResponseID %></td>  
+                      <td><%= responses[iCount].Age %></td>
+                      <td><%= responses[iCount].Gender %></td>
+                      <td><%= responses[iCount].Relationship %></td>
+                      <td><%= responses[iCount].Occupation %></td>
+                      <td><%= responses[iCount].Age %></td>
+                      <td style="text-align: center;"><%= responses[iCount].doesUseSocialMedia ? 'Yes' : 'No'; %></td>
+                      <td><%= responses[iCount].Age %></td>
+                      <td style="text-align: center;"><%= responses[iCount].AvgTimePerDay %></td>
+                      <% for (let questionIndex = 9; questionIndex <= 20; questionIndex++) { %>
+                      <td style="text-align: center;">
+                        <%= responses[iCount][`Q${questionIndex}`] %>
+                      </td>
+                      <% } %>
+                    </tr>
+                 <% } %>
+            </tbody>
+        </table>
+    </div>
     <!-- Footer-->
-    <footer class="py-5" style="background-color: #00a0e089">
+    <footer class="py-3" style="background-color: #00a0e089">
         <div class="container px-4 px-lg-5"><p class="m-0 text-center text-white">Copyright &copy; BYU Provo SMUMH 2023</p></div>
     </footer>
 </body>
