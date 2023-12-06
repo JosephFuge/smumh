@@ -70,7 +70,7 @@ async function getSurveyInfoList(pageNum) {
 }
 
 app.get("/admin", (req, res) => {
-  knex.select().from("response").then(surveyResponses => {
+  knex.select().from("response").orderBy([{column: 'ResponseID', order: 'asc'}]).then(surveyResponses => {
     res.render("responses", {responses: surveyResponses})
   })
 });

@@ -10,6 +10,22 @@ function changePage(pageNum) {
     }
 }
 
+function selectOneRow(responseID) {
+    Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
+        if (tempRow.id !== `response-${responseID}`) {
+            tempRow.style.display = 'none';
+        }
+    });
+    document.getElementById('showAllButton').style.display = 'inline-block';
+}
+
+function showAllRows() {
+    Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
+        tempRow.style.display = 'table-row';
+    });
+    document.getElementById('showAllButton').style.display = 'none';
+}
+
 function togglePassword(fieldId) {
       var passwordField = document.getElementById(fieldId);
       passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
