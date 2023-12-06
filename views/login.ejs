@@ -11,6 +11,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/login.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/login.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
 </head>
 
@@ -42,8 +43,9 @@
 
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
-
-            <button type="submit">Login</button>
+            <p class="login-error-text" id="loginError"></p>
+    
+            <button type="button" onclick="loginUser();">Login</button>
         </form>
     </div>
     <footer class="py-3" style="background-color: #00a0e089">
