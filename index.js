@@ -4,6 +4,10 @@ const SurveyData = require("./shared/SurveyData.js");
 let path = require("path");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
+const uuid = require('uuid');
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+
 
 const knex = require("knex")({
   client: "pg",
@@ -25,6 +29,8 @@ app.get("/index", (req, res) => {
 app.use(express.static('public'));
 
 app.use('/shared', express.static(path.join(__dirname, 'shared')));
+
+app.use('/admin', checkAuth);
 
 app.set("view engine", "ejs");
 
@@ -63,7 +69,98 @@ app.get('/responses', async (req, res, next) => {
 });
 
 // API listener middleware
-// const apiRouter = express.Router();
-// app.use(`/api`, apiRouter);
+const apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+app.use(cookieParser());
+
+async function checkAuth (req, res, next) {
+  authToken = req.cookies['token'];
+  const user = await getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+
+const secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(checkAuth);
+
+async function getUserByToken(authToken) {
+  const resultUser = await knex.select('Username').from('authorization').whereRaw('AuthToken = ?', [authToken]);
+  return resultUser[0];
+}
+
+function setAuthCookie(res, authToken) {
+  res.cookie('token', authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
+async function getUser(username) {
+  const userResult = await knex.select('Username').from('authorization').whereRaw('Username = ?', [username]);
+  return userResult[0];
+}
+
+async function createUser(username, password) {
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    Username: username,
+    Password: passwordHash,
+    AuthToken: uuid.v4(),
+  };
+
+  await knex.into('Authorization').insert(user);
+  
+  // return collection.insertOne(user);
+
+  return user;
+}
+
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await getUser(req.body.username)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await createUser(req.body.username, req.body.password);
+
+    setAuthCookie(res, user.AuthToken);
+    res.send({
+      username: user.Username,
+    });
+  }
+});
+
+app.post('/auth/login', async (req, res) => {
+  const user = await getUser(req.body.username);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.Password)) {
+      setAuthCookie(res, user.AuthToken);
+      res.send({ username: user.Username });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+apiRouter.delete('/auth/logout', (_req, res) => {
+  res.clearCookie('token');
+  res.status(204).end();
+});
+
+app.get('/user/me', async (req, res) => {
+  const authToken = req.cookies['token'];
+  const user = getUserByToken(authToken);
+  if (user[0]) {
+    res.send({ username: user[0].Username });
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
 
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));
