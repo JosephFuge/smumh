@@ -22,7 +22,7 @@ app.get("/index", (req, res) => {
 });
 
 // Frontend static middleware
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/shared', express.static(path.join(__dirname, 'shared')));
 
@@ -32,12 +32,14 @@ app.set("view engine", "ejs");
 //   res.sendFile('index.html', { root: 'public' });
 // });
 
+app.use(express.json());
+
 async function getSurveyInfoList(pageNum) {
-  const orgTypeSet = new Set(['University', 'Private', 'Government', 'Organization']);
-  const platformSet = new Set(['Youtube', 'Instagram']);
-  const testSurvey1 = new SurveyData(18, 'M', 'Single', 'University Student', orgTypeSet, true, platformSet, 'Between 1 and 2 hours', 2, 3, 1, 4, 3, 5, 2, 3, 5, 4, 2, 1);
-  const testSurvey2 = new SurveyData();
-  const testSurveys = [testSurvey1, testSurvey2];
+  // const orgTypeSet = new Set(['University', 'Private', 'Government', 'Organization']);
+  // const platformSet = new Set(['Youtube', 'Instagram']);
+  // const testSurvey1 = new SurveyData(18, 'M', 'Single', 'University Student', orgTypeSet, true, platformSet, 'Between 1 and 2 hours', 2, 3, 1, 4, 3, 5, 2, 3, 5, 4, 2, 1);
+  // const testSurvey2 = new SurveyData();
+  // const testSurveys = [testSurvey1, testSurvey2];
 
   const surveyResults = await knex.select().from("response");
 
@@ -45,21 +47,19 @@ async function getSurveyInfoList(pageNum) {
 }
 
 app.get('/admin', async (req, res, next) => {
-  console.log(`Views directory: ${app.get('views')}`);
-  console.log(`View engine: ${app.get('view engine')}`);
 
-  const pageNumber = req.body['pageNum'];
-  const pageSize = req.body['pageSize'];
+  // const pageNumber = req.body['pageNum'];
+  // const pageSize = req.body['pageSize'];
 
   const surveyResponses = await getSurveyInfoList();
 
   res.render('responses', {responses: surveyResponses});
 
-  if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
-    res.status(400).json({message: 'Page number or page size is invalid'});
-  } else {
+  // if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
+  //   res.status(400).json({message: 'Page number or page size is invalid'});
+  // } else {
     
-  }
+  // }
 });
 
 // API listener middleware
@@ -68,12 +68,37 @@ app.use(`/api`, apiRouter);
 
 apiRouter.post('/createSurvey', async (req, res) => {
   // Validate survey input
-  if (req.body['age'] && req.body['gender'] && req.body['relationship'] && req.body['occupation'] && req.body['organizationTypes'] && req.body['doesUseSocialMedia']
-  && req.body['socialMediaPlatforms'] && req.body['averageTimeSpent'] && req.body['q9'] && req.body['q10'] && req.body['q11'] && req.body['q12'] && req.body['q14']
-  && req.body['q13'] && req.body['q14'] && req.body['q15'] && req.body['q16'] && req.body['q17'] && req.body['q18'] && req.body['q19'] && req.body['q20']) {
-      await knex('responses').insert(req.body);
+  const uploadData = req.body;
+  console.log(uploadData);
+  if (uploadData['Age'] && uploadData['Gender'] && uploadData['RelationshipStatus'] && uploadData['OccupationStatus'] && uploadData['OrganizationTypes'] && uploadData['UseSocial']
+  && uploadData['SocialMediaPlatforms'] && uploadData['AvgTimePerDay'] && uploadData['Q9'] && uploadData['Q10'] && uploadData['Q11'] && uploadData['Q12'] && uploadData['Q14']
+  && uploadData['Q13'] && uploadData['Q14'] && uploadData['Q15'] && uploadData['Q16'] && uploadData['Q17'] && uploadData['Q18'] && uploadData['Q19'] && uploadData['Q20']) {
+    
+    uploadData['AssociatedUniversity'] = 'N';
+    uploadData['AssociatedCompany'] = 'N';
+    uploadData['AssociatedSchool'] = 'N';
+    uploadData['AssociatedPrivate'] = 'N';
+    uploadData['AssociatedGov'] = 'N';
+    uploadData['AssociatedNA'] = 'N';
 
-      res.status(201).json({message: 'Success'});
+    delete uploadData['SocialMediaPlatforms'];
+    delete uploadData['OrganizationTypes'];
+
+    
+
+    let now = new Date().toISOString();
+    now = now.substring(0, now.lastIndexOf('.'));
+    console.log(now);
+
+    uploadData['Timestamp'] = now;
+    uploadData['UseSocial'] = uploadData['UseSocial'] ? 'Y' : 'N';  
+
+    uploadData['Origin'] = 'n/a';
+    uploadData['City'] = uploadData['City'] ? uploadData['City'] : 'Provo';
+
+    await knex.into('response').insert(uploadData).column('Timestamp', 'Age', 'Gender', 'RelationshipStatus', 'OccupationStatus', 'AssociatedUniversity', 'AssociatedCompany', 'AssociatedSchool', 'AssociatedPrivate', 'AssociatedGov', 'AssociatedNA', 'UseSocial', 'AvgTimePerDay', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'City', 'Origin');
+
+    res.status(201).json({message: 'Success'});
   } else {
       res.status(400).json({message: 'Survey is missing data'});
   }

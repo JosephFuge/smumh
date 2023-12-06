@@ -23,10 +23,12 @@ function changePage(pageNum) {
 
 function submitSurvey() {
     if (validateForm(2)) {
+        const surveyDataBody = JSON.stringify(surveyInfo);
+        console.log(surveyDataBody);
         fetch('/api/createSurvey', {
             method: 'POST',
             headers: {'content-type': 'application/json'},
-            body: JSON.stringify(surveyInfo)
+            body: surveyDataBody
         });
     }
 }
@@ -37,7 +39,7 @@ function validateForm(pageNum) {
         const ageElement = document.getElementById('age');
 
         if (!Number.isNaN(parseInt(ageElement.value))) {
-            surveyInfo.age = parseInt(ageElement.value);
+            surveyInfo.Age = parseInt(ageElement.value);
             document.getElementById("ageError").style.display = "none";
         } else {
             validPage = false;
@@ -46,7 +48,7 @@ function validateForm(pageNum) {
 
         const genderElement = document.getElementById('gender');
         if (genderElement.value != 'select') {
-            surveyInfo.gender = genderElement.value.substring(0, 1);
+            surveyInfo.Gender = genderElement.value;
             document.getElementById("genderError").style.display = "none";
         } else {
             validPage = false;
@@ -56,7 +58,7 @@ function validateForm(pageNum) {
 
         const relationshipElement = document.getElementById('relationship-status');
         if (relationshipElement.value != 'select') {
-            surveyInfo.relationship = relationshipElement.value;
+            surveyInfo.RelationshipStatus = relationshipElement.value;
             document.getElementById("relationshipError").style.display = "none";
         } else {
             validPage = false;
@@ -65,7 +67,7 @@ function validateForm(pageNum) {
 
         const occupationElement = document.getElementById('occupation');
         if (occupationElement.value != 'select') {
-            surveyInfo.occupation = occupationElement.value;
+            surveyInfo.OccupationStatus = occupationElement.value;
             document.getElementById("occupationError").style.display = "none";
         } else {
             validPage = false;
@@ -73,15 +75,15 @@ function validateForm(pageNum) {
         }
         
         const organizationTypeElements = Array.from(document.getElementsByClassName('organization-type-checkbox')).map((element) => element.firstChild);
-        surveyInfo.organizationTypes.clear();
+        surveyInfo.OrganizationTypes = [];
         for (let orgTypeElement of organizationTypeElements) {
             if (orgTypeElement.checked) {
-                surveyInfo.organizationTypes.add(orgTypeElement.value);
+                surveyInfo.OrganizationTypes.push(orgTypeElement.value);
             }
         }
 
-        if (surveyInfo.organizationTypes.size === 0) {
-            surveyInfo.organizationTypes.add("N/A");
+        if (surveyInfo.OrganizationTypes.length === 0) {
+            surveyInfo.OrganizationTypes.push("N/A");
         }
 
 
@@ -89,10 +91,10 @@ function validateForm(pageNum) {
         const doesUseSocialMediaNoElement = document.getElementById('useSocialMedia-no');
 
         if (doesUseSocialMediaYesElement.checked) {
-            surveyInfo.doesUseSocialMedia = true;
+            surveyInfo.UseSocial = true;
             document.getElementById("useSocialMediaError").style.display = "none";
         } else if (doesUseSocialMediaNoElement.checked) {
-            surveyInfo.doesUseSocialMedia = false;
+            surveyInfo.UseSocial = false;
             document.getElementById("useSocialMediaError").style.display = "none";
         } else {
             validPage = false;
@@ -100,16 +102,16 @@ function validateForm(pageNum) {
         }
 
         const platformElements = Array.from(document.getElementsByClassName('platform-checkbox')).map((element) => element.firstChild);
-        surveyInfo.socialMediaPlatforms.clear();
+        surveyInfo.SocialMediaPlatforms = [];
         for (let tempPlatform of platformElements) {
             if (tempPlatform.checked) {
-                surveyInfo.socialMediaPlatforms.add(tempPlatform.value);
+                surveyInfo.SocialMediaPlatforms.push(tempPlatform.value);
             }
         }
 
         const averageTimeSpentElement = document.getElementById('averageTimeSpent');
         if (averageTimeSpentElement.value != 'select') {
-            surveyInfo.averageTimeSpent = averageTimeSpentElement.value;
+            surveyInfo.AvgTimePerDay = averageTimeSpentElement.value;
             document.getElementById("averageTimeSpentError").style.display = "none";
         } else {
             validPage = false;
@@ -118,7 +120,7 @@ function validateForm(pageNum) {
     } else if (pageNum === 2) {
         for (let i = 9; i <= 20; i++) {
             const scaleQuestionElement = document.getElementById(`scaleQ${i}`);
-            surveyInfo[`q${i}`] = scaleQuestionElement.value;
+            surveyInfo[`Q${i}`] = scaleQuestionElement.value;
         }
     }
     return validPage;
