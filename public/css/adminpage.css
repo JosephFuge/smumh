@@ -11,7 +11,15 @@ thead {
     display: none;
 }
 
+#responseSearchBar {
+    /* display: inline-block; */
+    width: 250px;
+    height: 34px;
+    margin-bottom: 0px;
+}
+
 .response-page {
+    cursor: pointer;
     display: none;
 }
 

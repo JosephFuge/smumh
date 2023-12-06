@@ -2,12 +2,10 @@ const express = require("express");
 const app = express();
 const SurveyData = require("./shared/SurveyData.js");
 let path = require("path");
-const { platform } = require("os");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 
@@ -24,16 +22,6 @@ const knex = require("knex")({
     ssl: true /*process.env.DB_SSL*/ ? {rejectUnauthorized: false} : false
   }
 });
-
-
-const corsOptions = {
-  origin: 'https://provosmumh.click',
-  optionsSuccessStatus: 200, // For legacy browser support
-  methods: "GET, POST", // Allowable HTTP methods
-  credentials: true // Enable credentials (cookies, authorization headers, etc.)
-};
-
-app.use(cors(corsOptions));
 
 
 app.get("/index", (req, res) => {
@@ -58,12 +46,6 @@ app.set("view engine", "ejs");
 app.use(express.json());
 
 async function getSurveyInfoList(pageNum) {
-  // const orgTypeSet = new Set(['University', 'Private', 'Government', 'Organization']);
-  // const platformSet = new Set(['Youtube', 'Instagram']);
-  // const testSurvey1 = new SurveyData(18, 'M', 'Single', 'University Student', orgTypeSet, true, platformSet, 'Between 1 and 2 hours', 2, 3, 1, 4, 3, 5, 2, 3, 5, 4, 2, 1);
-  // const testSurvey2 = new SurveyData();
-  // const testSurveys = [testSurvey1, testSurvey2];
-
   const surveyResults = await knex.select().from("response");
 
   return surveyResults;
@@ -90,22 +72,6 @@ app.get("/dashboard", (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 })
-
-/*app.get('/admin', async (req, res, next) => {
-
-  // const pageNumber = req.body['pageNum'];
-  // const pageSize = req.body['pageSize'];
-
-  const surveyResponses = await getSurveyInfoList();
-
-  res.render('responses', {responses: surveyResponses});
-
-  // if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
-  //   res.status(400).json({message: 'Page number or page size is invalid'});
-  // } else {
-    
-  // }
-});*/
 
 // API listener middleware
 const apiRouter = express.Router();
@@ -236,6 +202,7 @@ apiRouter.post('/createSurvey', async (req, res) => {
   }
 });
 
+// Check user login auth middleware
 async function checkAuth (req, res, next) {
   try {
     authToken = req.cookies['token'];
