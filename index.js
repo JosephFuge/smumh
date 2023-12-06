@@ -5,6 +5,13 @@ let path = require("path");
 const { platform } = require("os");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
+const uuid = require('uuid');
+const bcrypt = require('bcrypt');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
+
+app.use(cookieParser());
 
 const knex = require("knex")({
   client: "pg",
@@ -18,6 +25,17 @@ const knex = require("knex")({
   }
 });
 
+
+const corsOptions = {
+  origin: 'https://provosmumh.click',
+  optionsSuccessStatus: 200, // For legacy browser support
+  methods: "GET, POST", // Allowable HTTP methods
+  credentials: true // Enable credentials (cookies, authorization headers, etc.)
+};
+
+app.use(cors(corsOptions));
+
+
 app.get("/index", (req, res) => {
    res.render("index");
 });
@@ -25,7 +43,11 @@ app.get("/index", (req, res) => {
 // Frontend static middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.json());
+
 app.use('/shared', express.static(path.join(__dirname, 'shared')));
+
+app.use('/admin', checkAuth);
 
 app.set("view engine", "ejs");
 
@@ -51,7 +73,7 @@ app.get("/admin", (req, res) => {
   knex.select().from("response").then(surveyResponses => {
     res.render("responses", {responses: surveyResponses})
   })
-})
+});
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -92,7 +114,6 @@ app.use(`/api`, apiRouter);
 apiRouter.post('/createSurvey', async (req, res) => {
   // Validate survey input
   const uploadData = req.body;
-  // console.log(uploadData);
   if (uploadData['Age'] && uploadData['Gender'] && uploadData['RelationshipStatus'] && uploadData['OccupationStatus'] && uploadData['OrganizationTypes'] && uploadData['UseSocial']
   && uploadData['SocialMediaPlatforms'] && uploadData['AvgTimePerDay'] && uploadData['Q9'] && uploadData['Q10'] && uploadData['Q11'] && uploadData['Q12'] && uploadData['Q14']
   && uploadData['Q13'] && uploadData['Q14'] && uploadData['Q15'] && uploadData['Q16'] && uploadData['Q17'] && uploadData['Q18'] && uploadData['Q19'] && uploadData['Q20']) {
@@ -149,10 +170,8 @@ apiRouter.post('/createSurvey', async (req, res) => {
     delete uploadData['SocialMediaPlatforms'];
     delete uploadData['OrganizationTypes'];
 
-
     let now = new Date().toISOString();
     now = now.substring(0, now.lastIndexOf('.'));
-    console.log(now);
 
     uploadData['Timestamp'] = now;
     uploadData['UseSocial'] = uploadData['UseSocial'] ? 'Y' : 'N';  
@@ -163,8 +182,6 @@ apiRouter.post('/createSurvey', async (req, res) => {
     uploadData['OccupationStatus'] = uploadData['OccupationStatus'].charAt(0).toUpperCase() + uploadData['OccupationStatus'].slice(1);
 
     const newResponses =  await knex.into('response').insert(uploadData).column('Timestamp', 'Age', 'Gender', 'RelationshipStatus', 'OccupationStatus', 'AssociatedUniversity', 'AssociatedCompany', 'AssociatedSchool', 'AssociatedPrivate', 'AssociatedGov', 'AssociatedNA', 'UseSocial', 'AvgTimePerDay', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'City', 'Origin').returning('ResponseID');
-
-    console.log(newResponses[0]);
 
     if (socialPlatforms.length > 0 && newResponses[0]) {
       const responsePlatforms = [];
@@ -217,6 +234,102 @@ apiRouter.post('/createSurvey', async (req, res) => {
   } else {
       res.status(400).json({message: 'Survey is missing data'});
   }
+});
+
+async function checkAuth (req, res, next) {
+  try {
+    authToken = req.cookies['token'];
+    const user = await getUserByToken(authToken);
+    if (user) {
+      next();
+    } else {
+      res.status(401).send({ msg: 'Unauthorized' });
+    }
+  } catch (error) {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+
+apiRouter.post('/login', async (req, res) => {
+  const user = await getUser(req.body.username);
+  if (user) {
+    try {
+      if (await bcrypt.compare(req.body.password, user.Password)) {
+        setAuthCookie(res, user.AuthToken);
+        res.send({ username: user.Username });
+        return;
+      }
+    } catch (error) {
+      res.status(401).send({ message: 'Invalid password'});
+      return;
+    } 
+  }
+  res.status(401).send({ message: 'Invalid username or password' });
+});
+
+const secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use('/api/auth', checkAuth);
+
+async function getUserByToken(authToken) {
+  const resultUser = await knex('authtoken').select().where('AuthToken', authToken);
+  return resultUser[0];
+}
+
+function setAuthCookie(res, authToken) {
+  res.cookie('token', authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+    path: '/'
+  });
+}
+
+async function getUser(username) {
+  const userResult = await knex('authtoken').select().where('Username', username);
+
+  return userResult[0];
+}
+
+async function createUser(username, password) {
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    Username: username,
+    Password: passwordHash,
+    AuthToken: uuid.v4(),
+  };
+
+  await knex.into('authtoken').insert(user);
+
+  return user;
+}
+
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await getUser(req.body.username)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await createUser(req.body.username, req.body.password);
+    res.send({
+      username: user.Username,
+    });
+  }
+});
+
+apiRouter.delete('/auth/logout', (_req, res) => {
+  res.clearCookie('token');
+  res.status(204).end();
+});
+
+app.get('/user/me', async (req, res) => {
+  const authToken = req.cookies['token'];
+  const user = getUserByToken(authToken);
+  if (user[0]) {
+    res.send({ username: user[0].Username });
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));
