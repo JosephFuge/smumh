@@ -28,6 +28,7 @@ function checkPassword() {
 }
 
 function showAdminManage() {
+    window.sessionStorage.setItem("manage", "true")
     document.getElementById("manageUsers").style.display = "";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "none";
@@ -41,17 +42,8 @@ function showAdminCreate() {
     document.getElementById("showTable").style.display = "none";
 }
 
-function showAdminEdit(userName, password) {
-    document.getElementById("manageUsers").style.display = "none";
-    document.getElementById("createUser").style.display = "none";
-    document.getElementById("showTable").style.display = "none";
-    document.getElementById("usernameEdit").value = userName;
-    document.getElementById("passwordEdit").value = password
-    document.getElementById("confirmPasswordEdit").value = password
-
-}
-
 function showSurveyData() {
+    sessionStorage.setItem("manage", "false")
     document.getElementById("manageUsers").style.display = "none";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "";
@@ -72,5 +64,30 @@ function deleteUser(usernameVariable) {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({username: usernameVariable})
-        });
+    });
+    window.location.reload()
+}
+
+async function registerUser() {
+    const userName = document.getElementById('username')?.value;
+    const password = document.getElementById('password')?.value;
+    const response = await fetch(`/api/auth/create`, {
+        method: 'post',
+        body: JSON.stringify({ username: userName, password: password }),
+        headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        },
+    });
+    clearInput()
+    window.location.reload()
+}
+
+function loadPage() {
+    console.log(sessionStorage.getItem("manage"))
+    if (sessionStorage.getItem("manage") == "true") {
+        showAdminManage()
+    }
+    else {
+        showSurveyData()
+    }
 }

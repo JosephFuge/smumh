@@ -10,7 +10,7 @@
     <title>SMUMH Survey Responses</title>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
 </head>
-<body onload="showSurveyData()">
+<body onload="loadPage()">
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container px-5">
@@ -72,22 +72,22 @@
             <legend style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: bold;">Create new admin user:</legend>
             <!-- Username Field -->
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" minlength="3" maxlength="30" required>
             <br>
             <!-- Password Field with Toggle -->
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" minlength="3" maxlength="30" required>
             <br>
             <!-- Confirm Password Field with Toggle -->
             <label for="confirmPassword">Confirm Password: </label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" minlength="3" maxlength="30" required>
 
             <div style="display: flex; flex-direction: row;">
                 <input style="width: 10%" id="showPasswords" type="checkbox" onchange="togglePassword('password'); togglePassword('confirmPassword')">
                 <label for="showPasswords" style="width: 90%;">Show Passwords</label>
             </div>
             <!-- Submit Button note-->
-            <button class="submit-button" type="submit" onclick="clearInput()">Create User</button>
+            <button class="submit-button" type="button" onclick="registerUser()">Create User</button>
         </form>
         <br><br><br>
     </div>

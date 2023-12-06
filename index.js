@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const SurveyData = require("./shared/SurveyData.js");
 let path = require("path");
-const PORT_NUM = process.env.PORT || 3000;
+const PORT_NUM = process.env.PORT || 3001;
 app.use(express.urlencoded({extended: true}));
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
@@ -74,12 +74,6 @@ app.get("/admin", (req, res) => {
     res.render("responses", {responses: surveyResponses, users: userInfo})
   })
   })
-});
-
-api.post("/deleteUser", async (req, res) => {
-  console.log(req.params.id) 
-  await knex("authtoken").where("Username", req.body['username']).del()
-  res.status(200)
 });
 
 app.get("/", (req, res) => {
@@ -337,6 +331,11 @@ app.get('/user/me', async (req, res) => {
     return;
   }
   res.status(401).send({ msg: 'Unauthorized' });
+});
+
+apiRouter.post("/auth/deleteUser", async (req, res) => { 
+  await knex("authtoken").where("Username", req.body['username']).del()
+  res.status(200)
 });
 
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));
