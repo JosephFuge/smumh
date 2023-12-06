@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const SurveyData = require("./shared/SurveyData.js");
 let path = require("path");
+const { platform } = require("os");
 const PORT_NUM = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
 
@@ -69,11 +70,11 @@ app.use(`/api`, apiRouter);
 apiRouter.post('/createSurvey', async (req, res) => {
   // Validate survey input
   const uploadData = req.body;
-  console.log(uploadData);
+  // console.log(uploadData);
   if (uploadData['Age'] && uploadData['Gender'] && uploadData['RelationshipStatus'] && uploadData['OccupationStatus'] && uploadData['OrganizationTypes'] && uploadData['UseSocial']
   && uploadData['SocialMediaPlatforms'] && uploadData['AvgTimePerDay'] && uploadData['Q9'] && uploadData['Q10'] && uploadData['Q11'] && uploadData['Q12'] && uploadData['Q14']
   && uploadData['Q13'] && uploadData['Q14'] && uploadData['Q15'] && uploadData['Q16'] && uploadData['Q17'] && uploadData['Q18'] && uploadData['Q19'] && uploadData['Q20']) {
-    
+
     uploadData['AssociatedUniversity'] = 'N';
     uploadData['AssociatedCompany'] = 'N';
     uploadData['AssociatedSchool'] = 'N';
@@ -81,10 +82,51 @@ apiRouter.post('/createSurvey', async (req, res) => {
     uploadData['AssociatedGov'] = 'N';
     uploadData['AssociatedNA'] = 'N';
 
+    for (const orgType of uploadData['OrganizationTypes']) {
+      switch (orgType) {
+        case 'University':
+          uploadData['AssociatedUniversity'] = 'Y';
+          break;
+        case 'Private':
+          uploadData['AssociatedPrivate'] = 'Y';
+          break;
+        case 'School':
+          uploadData['AssociatedSchool'] = 'Y';
+          break;
+        case 'Government':
+          uploadData['AssociatedGov'] = 'Y';
+          break;
+        case 'Company':
+          uploadData['AssociatedCompany'] = 'Y';
+          break;
+        case 'N/A':
+          uploadData['AssociatedNA'] = 'Y';
+          break;
+        default:
+          break;
+      }
+    }
+
+    switch (uploadData['RelationshipStatus']) {
+      case 'single':
+        uploadData['RelationshipStatus'] = 'Single';
+        break;
+      case 'married':
+        uploadData['RelationshipStatus'] = 'Married';
+        break;
+      case 'in-relationship':
+        uploadData['RelationshipStatus'] = 'In a relationship';
+        break;
+      case 'divorced':
+        uploadData['RelationshipStatus'] = 'Divorced';
+    }
+
+
+    const socialPlatforms = uploadData['SocialMediaPlatforms'];
+
     delete uploadData['SocialMediaPlatforms'];
     delete uploadData['OrganizationTypes'];
 
-    
 
     let now = new Date().toISOString();
     now = now.substring(0, now.lastIndexOf('.'));
@@ -96,7 +138,58 @@ apiRouter.post('/createSurvey', async (req, res) => {
     uploadData['Origin'] = 'n/a';
     uploadData['City'] = uploadData['City'] ? uploadData['City'] : 'Provo';
 
-    await knex.into('response').insert(uploadData).column('Timestamp', 'Age', 'Gender', 'RelationshipStatus', 'OccupationStatus', 'AssociatedUniversity', 'AssociatedCompany', 'AssociatedSchool', 'AssociatedPrivate', 'AssociatedGov', 'AssociatedNA', 'UseSocial', 'AvgTimePerDay', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'City', 'Origin');
+    uploadData['OccupationStatus'] = uploadData['OccupationStatus'].charAt(0).toUpperCase() + uploadData['OccupationStatus'].slice(1);
+
+    const newResponses =  await knex.into('response').insert(uploadData).column('Timestamp', 'Age', 'Gender', 'RelationshipStatus', 'OccupationStatus', 'AssociatedUniversity', 'AssociatedCompany', 'AssociatedSchool', 'AssociatedPrivate', 'AssociatedGov', 'AssociatedNA', 'UseSocial', 'AvgTimePerDay', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'City', 'Origin').returning('ResponseID');
+
+    console.log(newResponses[0]);
+
+    if (socialPlatforms.length > 0 && newResponses[0]) {
+      const responsePlatforms = [];
+
+      for (const tempSocial of socialPlatforms) {
+        let platformNum = 0;
+        switch (tempSocial) {
+          case 'Facebook':
+            platformNum = 0;
+            break;
+          case 'Twitter':
+            platformNum = 0;
+            break;
+          case 'Instagram':
+            platformNum = 0;
+            break;
+          case 'YouTube':
+            platformNum = 0;
+            break;
+          case 'Discord':
+            platformNum = 0;
+            break;
+          case 'Reddit':
+            platformNum = 0;
+            break;
+          case 'Pinterest':
+            platformNum = 0;
+            break;
+          case 'TikTok':
+            platformNum = 0;
+            break;
+          case 'Snapchat':
+            platformNum = 0;
+            break;
+          default:
+            platformNum = 0;
+            break;
+        }
+        if (platformNum !== 0) {
+          responsePlatforms.push({ResponseID: newResponses[0], PlatformID: platformNum});
+        }
+      }
+
+      if (responsePlatforms.length > 0) {
+        await knex.into('responseplatform').insert(responsePlatforms);
+      }
+    }
 
     res.status(201).json({message: 'Success'});
   } else {
