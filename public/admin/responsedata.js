@@ -31,7 +31,6 @@ function showAdminManage() {
     document.getElementById("manageUsers").style.display = "";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "none";
-    document.getElementById("editUser").style.display = "none";
     document.getElementById("viewSurveyButton").style.fontWeight = "";
     document.getElementById("viewUsersButton").style.fontWeight = "bold";
 }
@@ -40,21 +39,22 @@ function showAdminCreate() {
     document.getElementById("manageUsers").style.display = "none";
     document.getElementById("createUser").style.display = "";
     document.getElementById("showTable").style.display = "none";
-    document.getElementById("editUser").style.display = "none";
 }
 
-function showAdminEdit() {
+function showAdminEdit(userName, password) {
     document.getElementById("manageUsers").style.display = "none";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "none";
-    document.getElementById("editUser").style.display = "";
+    document.getElementById("usernameEdit").value = userName;
+    document.getElementById("passwordEdit").value = password
+    document.getElementById("confirmPasswordEdit").value = password
+
 }
 
 function showSurveyData() {
     document.getElementById("manageUsers").style.display = "none";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "";
-    document.getElementById("editUser").style.display = "none";
     document.getElementById("viewSurveyButton").style.fontWeight = "bold";
     document.getElementById("viewUsersButton").style.fontWeight = "";
 }
@@ -67,10 +67,10 @@ function clearInput() {
     showAdminManage()
 }
 
-function clearInputEdit() {
-    document.getElementById("usernameEdit").value = "";
-    document.getElementById("passwordEdit").value = "";
-    document.getElementById("confirmPasswordEdit").value = "";
-    document.getElementById("showPasswordsEdit").checked = false;
-    showAdminManage()
+function deleteUser(usernameVariable) {
+    fetch('/api/auth/deleteUser', {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({username: usernameVariable})
+        });
 }

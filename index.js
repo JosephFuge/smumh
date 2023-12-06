@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const SurveyData = require("./shared/SurveyData.js");
 let path = require("path");
-const PORT_NUM = process.env.PORT || 3000;
+const PORT_NUM = process.env.PORT || 3002;
 app.use(express.urlencoded({extended: true}));
 
 const knex = require("knex")({
@@ -13,7 +13,7 @@ const knex = require("knex")({
     password: process.env.RDS_PASSWORD || "Section4Group9Admin!",
     database: "intex",
     port: process.env.RDS_PORT || 5432,
-    ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
+    ssl: true ? {rejectUnauthorized: false} : false
   }
 });
 
@@ -45,10 +45,18 @@ async function getSurveyInfoList(pageNum) {
 }
 
 app.get("/admin", (req, res) => {
-  knex.select().from("response").then(surveyResponses => {
-    res.render("responses", {responses: surveyResponses})
+  knex.select().from("authtoken").then(userInfo => {
+    knex.select().from("response").then(surveyResponses => {
+    res.render("responses", {responses: surveyResponses, users: userInfo})
+  })
   })
 })
+
+api.post("/deleteUser", async (req, res) => {
+  console.log(req.params.id) 
+  await knex("authtoken").where("Username", req.body['username']).del()
+  res.status(200)
+});
 
 app.get("/", (req, res) => {
   res.render("index");
