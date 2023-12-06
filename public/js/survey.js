@@ -24,7 +24,6 @@ function changePage(pageNum) {
 function submitSurvey() {
     if (validateForm(2)) {
         const surveyDataBody = JSON.stringify(surveyInfo);
-        console.log(surveyDataBody);
         fetch('/api/createSurvey', {
             method: 'POST',
             headers: {'content-type': 'application/json'},
