@@ -151,38 +151,38 @@ apiRouter.post('/createSurvey', async (req, res) => {
         let platformNum = 0;
         switch (tempSocial) {
           case 'Facebook':
-            platformNum = 0;
+            platformNum = 1;
             break;
           case 'Twitter':
-            platformNum = 0;
+            platformNum = 2;
             break;
           case 'Instagram':
-            platformNum = 0;
+            platformNum = 3;
             break;
           case 'YouTube':
-            platformNum = 0;
+            platformNum = 4;
             break;
           case 'Discord':
-            platformNum = 0;
+            platformNum = 5;
             break;
           case 'Reddit':
-            platformNum = 0;
+            platformNum = 6;
             break;
           case 'Pinterest':
-            platformNum = 0;
+            platformNum = 7;
             break;
           case 'TikTok':
-            platformNum = 0;
+            platformNum = 8;
             break;
           case 'Snapchat':
-            platformNum = 0;
+            platformNum = 9;
             break;
           default:
             platformNum = 0;
             break;
         }
         if (platformNum !== 0) {
-          responsePlatforms.push({ResponseID: newResponses[0], PlatformID: platformNum});
+          responsePlatforms.push({ PlatformID: platformNum, ResponseID: newResponses[0]['ResponseID']});
         }
       }
 
