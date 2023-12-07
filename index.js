@@ -28,6 +28,10 @@ app.get("/index", (req, res) => {
    res.render("index");
 });
 
+app.get("/submitted", (req, res) => {
+  res.render("submitted");
+});
+
 // Frontend static middleware
 app.use(express.static(path.join(__dirname, 'public')));
 

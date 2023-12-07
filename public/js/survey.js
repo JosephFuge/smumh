@@ -38,6 +38,7 @@ function submitSurvey() {
             headers: {'content-type': 'application/json'},
             body: surveyDataBody
         });
+        window.location.href = "/submitted"
     }
 }
 
