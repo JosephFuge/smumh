@@ -27,15 +27,22 @@ function addListeners() {
 
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         let searchValue = document.getElementById('responseSearchBar').value;
+        const tempSearchType = document.getElementById('searchTypeSelect').value;
         
         if (!searchValue || searchValue.trim().length === 0) {
             // Prevent form submission
             event.preventDefault();
             if (isSearching) {
                 isSearching = false;
+                document.getElementById('searchBarErrorText').style.display = 'none';
                 window.location.href = '/admin';
             }
+        } else if (tempSearchType === 'responseIdSearch' && Number.isNaN(parseInt(searchValue))) {
+            // Prevent form submission
+            event.preventDefault();
+            document.getElementById('searchBarErrorText').style.display = 'inline-block';
         } else {
+            document.getElementById('searchBarErrorText').style.display = 'none';
             isSearching = true;
         }
     });
@@ -50,7 +57,7 @@ function selectOneRow(responseID) {
     document.getElementById('showAllButton').style.display = 'inline-block';
 }
 
-function showSingleResponseBox(Age, Gender, RelationshipStatus, OccupationStatus, Organizations, UseSocial, Platforms, AvgTimePerDay, Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18, Q19, Q20) {
+function showSingleResponseBox(Age, Gender, RelationshipStatus, OccupationStatus, Organizations, UseSocial, Platforms, AvgTimePerDay, Origin, City, Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18, Q19, Q20) {
     document.getElementById("showSingleResponse").style.display = "";
     document.getElementById("age").innerHTML = Age;
     document.getElementById("gender").innerHTML = Gender;
@@ -60,6 +67,8 @@ function showSingleResponseBox(Age, Gender, RelationshipStatus, OccupationStatus
     document.getElementById("useSocialMedia").innerHTML = UseSocial == "Y" ? "Yes":"No";
     document.getElementById("socialMediaPlatforms").innerHTML = Platforms;
     document.getElementById("timePerDay").innerHTML = AvgTimePerDay;
+    document.getElementById("originText").innerHTML = Origin;
+    document.getElementById("cityText").innerHTML = City;
     document.getElementById("Q9").innerHTML = numToText(Q9, "Never", "Rarely", "Neutral", "Sometimes", "Always");
     document.getElementById("Q10").innerHTML = numToText(Q10, "Never", "Rarely", "Neutral", "Sometimes", "Always");
     document.getElementById("Q11").innerHTML = numToText(Q11, "Never", "Rarely", "Neutral", "Sometimes", "Always");
@@ -96,20 +105,6 @@ function numToText(Q, value1, value2, value3, value4, value5) {
     }
 
     return(outcome)
-}
-
-function searchText() {
-    const searchInputText = document.getElementById('responseSearchBar').value;
-    if (searchInputText && searchInputText.length > 0) {
-        fetch(`/api/auth/searchResponses?text=${searchInputText}`, {
-            method: 'get',
-            headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            },
-        });
-    } else if (searchInputText && searchInputText.length === 0) {
-        location.window.reload();
-    }
 }
 
 function showShowAll() {
