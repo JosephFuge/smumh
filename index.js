@@ -57,7 +57,7 @@ app.use(express.json());
 async function getSurveyInfoList(pageNum) {
   const surveyResults = await knex.raw('SELECT DISTINCT r1."ResponseID", r1."Timestamp", r1."Age", r1."Gender", r1."RelationshipStatus",\
   r1."OccupationStatus", r1."UseSocial", r1."AvgTimePerDay", r1."AssociatedUniversity", r1."AssociatedCompany", r1."AssociatedSchool",\
-  r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15",\
+  r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."City", r1."Origin", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15",\
   r1."Q16", r1."Q17", r1."Q18", r1."Q19", r1."Q20", (SELECT string_agg(p2."PlatformName", \', \') FROM responseplatform rp2\
   INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID"\
   WHERE rp2."ResponseID" = r1."ResponseID") AS "SocialMediaPlatforms"\
@@ -326,7 +326,7 @@ async function searchResponses(textInput, searchType) {
         const likeInput = `%${textInput}%`;
         const answer = await knex.raw('SELECT DISTINCT r1."ResponseID", r1."Timestamp", r1."Age", r1."Gender", r1."RelationshipStatus",\
         r1."OccupationStatus", r1."UseSocial", r1."AvgTimePerDay", r1."AssociatedUniversity", r1."AssociatedCompany", r1."AssociatedSchool",\
-        r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15",\
+        r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."City", r1."Origin", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15",\
         r1."Q16", r1."Q17", r1."Q18", r1."Q19", r1."Q20", (SELECT string_agg(p2."PlatformName", \', \') FROM responseplatform rp2\
         INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID"\
         WHERE rp2."ResponseID" = r1."ResponseID") AS "SocialMediaPlatforms"\
