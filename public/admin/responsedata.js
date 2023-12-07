@@ -165,6 +165,7 @@ function showAdminCreate() {
     document.getElementById("createUser").style.display = "";
     document.getElementById("showTable").style.display = "none";
     document.getElementById("showSingleResponse").style.display = "none";
+    document.getElementById('deleteError').style.display = "none";
 }
 
 function showSurveyData() {
@@ -173,6 +174,7 @@ function showSurveyData() {
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "";
     document.getElementById("showSingleResponse").style.display = "none";
+    document.getElementById('deleteError').style.display = "none";
     document.getElementById("viewSurveyButton").style.fontWeight = "bold";
     document.getElementById("viewUsersButton").style.fontWeight = "";
 }
@@ -185,13 +187,19 @@ function clearInput() {
     showAdminManage()
 }
 
-function deleteUser(usernameVariable) {
-    fetch('/api/auth/deleteUser', {
+function deleteUser(usernameVariable, arrayLength) {
+    if (arrayLength < 2) {
+        document.getElementById('deleteError').style.display = "";
+        document.getElementById('deleteError').innerHTML = "YOU CANNOT DELETE THE LAST USER";
+    }
+    else {
+        fetch('/api/auth/deleteUser', {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify({username: usernameVariable})
-    });
-    window.location.reload()
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ username: usernameVariable })
+        });
+        window.location.reload()
+    }
 }
 
 async function registerUser() {
