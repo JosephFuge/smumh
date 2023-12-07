@@ -124,7 +124,7 @@
             </thead>
             <tbody>
                 <% for (let iCount = 0; iCount < responses.length; iCount++) { %>
-                    <tr class="page-<%= Math.floor(iCount / 25) %> response-page" id="response-<%= responses[iCount].ResponseID %>" onclick="selectOneRow('<%= responses[iCount].ResponseID %>'); showSingleResponseBox('<%= responses[iCount].Age %>','<%= responses[iCount].Gender %>','<%= responses[iCount].RelationshipStatus %>','<%= responses[iCount].OccupationStatus %>','<%= responses[iCount].Occupations %>','<%= responses[iCount].UseSocial %>','<%= responses[iCount].SocialMediaPlatforms %>','<%= responses[iCount].AvgTimePerDay %>','<%= responses[iCount].Q9 %>','<%= responses[iCount].Q10 %>','<%= responses[iCount].Q11 %>','<%= responses[iCount].Q12 %>','<%= responses[iCount].Q13 %>','<%= responses[iCount].Q14 %>','<%= responses[iCount].Q15 %>','<%= responses[iCount].Q16 %>','<%= responses[iCount].Q17 %>','<%= responses[iCount].Q18 %>','<%= responses[iCount].Q19 %>','<%= responses[iCount].Q20 %>')">
+                    <tr class="page-<%= Math.floor(iCount / 25) %> response-page" id="response-<%= responses[iCount].ResponseID %>" onclick="selectOneRow('<%= responses[iCount].ResponseID %>'); showSingleResponseBox('<%= responses[iCount].Age %>','<%= responses[iCount].Gender %>','<%= responses[iCount].RelationshipStatus %>','<%= responses[iCount].OccupationStatus %>','<%= responses[iCount].Occupations %>','<%= responses[iCount].UseSocial %>','<%= responses[iCount].SocialMediaPlatforms %>','<%= responses[iCount].AvgTimePerDay %>', '<%= responses[iCount].Origin %>', '<%= responses[iCount].City %>', '<%= responses[iCount].Q9 %>','<%= responses[iCount].Q10 %>','<%= responses[iCount].Q11 %>','<%= responses[iCount].Q12 %>','<%= responses[iCount].Q13 %>','<%= responses[iCount].Q14 %>','<%= responses[iCount].Q15 %>','<%= responses[iCount].Q16 %>','<%= responses[iCount].Q17 %>','<%= responses[iCount].Q18 %>','<%= responses[iCount].Q19 %>','<%= responses[iCount].Q20 %>')">
                       <td><%= responses[iCount].ResponseID %></td>  
                       <td><%= responses[iCount].Age %></td>
                       <td><%= responses[iCount].Gender %></td>
@@ -164,6 +164,11 @@
                         <span id="occupationStatus"></span>
                     </div>
                     <br>
+                    <div class="response-item">
+                        <label for="cityText">City:</label>
+                        <span id="cityText"></span>
+                    </div>
+                    <br>
                 </div>
                 <div class="response-column">
                     <div class="response-item">
@@ -184,6 +189,11 @@
                     <div class="response-item">
                         <label for="timePerDay">Time Spent Per Day:</label>
                         <span id="timePerDay"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="originText">Origin:</label>
+                        <span id="originText"></span>
                     </div>
                     <br>
                     <!-- Add other fields as needed -->

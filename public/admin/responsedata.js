@@ -57,7 +57,7 @@ function selectOneRow(responseID) {
     document.getElementById('showAllButton').style.display = 'inline-block';
 }
 
-function showSingleResponseBox(Age, Gender, RelationshipStatus, OccupationStatus, Organizations, UseSocial, Platforms, AvgTimePerDay, Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18, Q19, Q20) {
+function showSingleResponseBox(Age, Gender, RelationshipStatus, OccupationStatus, Organizations, UseSocial, Platforms, AvgTimePerDay, Origin, City, Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18, Q19, Q20) {
     document.getElementById("showSingleResponse").style.display = "";
     document.getElementById("age").innerHTML = Age;
     document.getElementById("gender").innerHTML = Gender;
@@ -67,6 +67,8 @@ function showSingleResponseBox(Age, Gender, RelationshipStatus, OccupationStatus
     document.getElementById("useSocialMedia").innerHTML = UseSocial == "Y" ? "Yes":"No";
     document.getElementById("socialMediaPlatforms").innerHTML = Platforms;
     document.getElementById("timePerDay").innerHTML = AvgTimePerDay;
+    document.getElementById("originText").innerHTML = Origin;
+    document.getElementById("cityText").innerHTML = City;
     document.getElementById("Q9").innerHTML = numToText(Q9, "Never", "Rarely", "Neutral", "Sometimes", "Always");
     document.getElementById("Q10").innerHTML = numToText(Q10, "Never", "Rarely", "Neutral", "Sometimes", "Always");
     document.getElementById("Q11").innerHTML = numToText(Q11, "Never", "Rarely", "Neutral", "Sometimes", "Always");
