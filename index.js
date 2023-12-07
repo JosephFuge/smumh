@@ -19,7 +19,7 @@ const knex = require("knex")({
     password: process.env.RDS_PASSWORD || "Section4Group9Admin!",
     database: "intex",
     port: process.env.RDS_PORT || 5432,
-    ssl: true /*process.env.DB_SSL*/ ? {rejectUnauthorized: false} : false
+    ssl: true ? {rejectUnauthorized: false} : false
   }
 });
 
@@ -51,9 +51,12 @@ async function getSurveyInfoList(pageNum) {
   return surveyResults;
 }
 
-app.get("/admin", async (req, res) => {
-  const results = await getSurveyInfoList();
-  res.render("responses", {responses: results});
+app.get("/admin", (req, res) => {
+  knex.select().from("authtoken").then(userInfo => {
+    knex.select().from("response").then(surveyResponses => {
+    res.render("responses", {responses: surveyResponses, users: userInfo})
+  })
+  })
 });
 
 app.get("/", (req, res) => {
@@ -393,6 +396,11 @@ app.get('/user/me', async (req, res) => {
     return;
   }
   res.status(401).send({ msg: 'Unauthorized' });
+});
+
+apiRouter.post("/auth/deleteUser", async (req, res) => { 
+  await knex("authtoken").where("Username", req.body['username']).del()
+  res.status(200)
 });
 
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));

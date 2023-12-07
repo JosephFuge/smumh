@@ -76,10 +76,10 @@ function checkPassword() {
 }
 
 function showAdminManage() {
+    window.sessionStorage.setItem("manage", "true")
     document.getElementById("manageUsers").style.display = "";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "none";
-    document.getElementById("editUser").style.display = "none";
     document.getElementById("viewSurveyButton").style.fontWeight = "";
     document.getElementById("viewUsersButton").style.fontWeight = "bold";
 }
@@ -88,21 +88,13 @@ function showAdminCreate() {
     document.getElementById("manageUsers").style.display = "none";
     document.getElementById("createUser").style.display = "";
     document.getElementById("showTable").style.display = "none";
-    document.getElementById("editUser").style.display = "none";
-}
-
-function showAdminEdit() {
-    document.getElementById("manageUsers").style.display = "none";
-    document.getElementById("createUser").style.display = "none";
-    document.getElementById("showTable").style.display = "none";
-    document.getElementById("editUser").style.display = "";
 }
 
 function showSurveyData() {
+    sessionStorage.setItem("manage", "false")
     document.getElementById("manageUsers").style.display = "none";
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "";
-    document.getElementById("editUser").style.display = "none";
     document.getElementById("viewSurveyButton").style.fontWeight = "bold";
     document.getElementById("viewUsersButton").style.fontWeight = "";
 }
@@ -115,10 +107,35 @@ function clearInput() {
     showAdminManage()
 }
 
-function clearInputEdit() {
-    document.getElementById("usernameEdit").value = "";
-    document.getElementById("passwordEdit").value = "";
-    document.getElementById("confirmPasswordEdit").value = "";
-    document.getElementById("showPasswordsEdit").checked = false;
-    showAdminManage()
+function deleteUser(usernameVariable) {
+    fetch('/api/auth/deleteUser', {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({username: usernameVariable})
+    });
+    window.location.reload()
+}
+
+async function registerUser() {
+    const userName = document.getElementById('username')?.value;
+    const password = document.getElementById('password')?.value;
+    const response = await fetch(`/api/auth/create`, {
+        method: 'post',
+        body: JSON.stringify({ username: userName, password: password }),
+        headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        },
+    });
+    clearInput()
+    window.location.reload()
+}
+
+function loadPage() {
+    console.log(sessionStorage.getItem("manage"))
+    if (sessionStorage.getItem("manage") == "true") {
+        showAdminManage()
+    }
+    else {
+        showSurveyData()
+    }
 }
