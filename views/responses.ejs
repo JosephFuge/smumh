@@ -10,7 +10,7 @@
     <title>SMUMH Survey Responses</title>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
 </head>
-<body onload="showSurveyData()">
+<body onload="showSurveyData();addListeners();">
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container px-5">
@@ -125,7 +125,10 @@
             <button type="button" onclick="changePage(currentPage - 1)" style="padding: 6px; font-size: small;">PREVIOUS</button>
             <button type="button" onclick="changePage(currentPage + 1)" style="padding: 6px; font-size: small;">NEXT</button>
             <button type="button" id="showAllButton" onclick="showAllRows()" style="padding: 6px; font-size: small;">SHOW ALL</button>
-            <input type="text" id="responseSearchBar" placeholder="Search...">
+            <form id="searchForm" action="searchResponses" method="get">
+                <input type="text" id="responseSearchBar" name="searchText" placeholder="Search...">
+                <button type="submit" id="responseSearchButton" style="padding: 6px; font-size: small;">SEARCH</button>
+            </form>
         </div>
         <table id="surveyTable" class="table table-striped table-bordered table-hover" style="width:95%; margin: auto; margin-bottom: 40px;">
             <thead>

@@ -1,4 +1,5 @@
 let currentPage = 0;
+
 function changePage(pageNum) {
     const newPage = Array.from(document.getElementsByClassName(`page-${pageNum}`));
     if (newPage.length > 0) {
@@ -10,6 +11,23 @@ function changePage(pageNum) {
     }
 }
 
+function addListeners() {
+    document.getElementById('responseSearchBar').addEventListener("keyup", (event) => { 
+        if (event.key == 'Enter') { 
+            document.getElementById('responseSearchButton').click();
+        } 
+    }); 
+
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        let searchValue = document.getElementById('responseSearchBar').value;
+        
+        if (!searchValue || searchValue.trim().length === 0) {
+            // Prevent form submission
+            event.preventDefault();
+        }
+    });
+}
+
 function selectOneRow(responseID) {
     Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
         if (tempRow.id !== `response-${responseID}`) {
@@ -17,6 +35,20 @@ function selectOneRow(responseID) {
         }
     });
     document.getElementById('showAllButton').style.display = 'inline-block';
+}
+
+function searchText() {
+    const searchInputText = document.getElementById('responseSearchBar').value;
+    if (searchInputText && searchInputText.length > 0) {
+        fetch(`/api/auth/searchResponses?text=${searchInputText}`, {
+            method: 'get',
+            headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+    } else if (searchInputText && searchInputText.length === 0) {
+        location.window.reload();
+    }
 }
 
 function showAllRows() {
