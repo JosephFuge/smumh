@@ -1,5 +1,7 @@
 async function loginUser() {
-    document.cookie = token + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    if (document.cookie.includes('token')) {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
     const userName = document.getElementById('username')?.value;
     const password = document.getElementById('password')?.value;
     const response = await fetch(`/api/login`, {
