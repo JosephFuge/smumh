@@ -13,7 +13,7 @@
     <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
 </head>
 
-<body>
+<body style="display: flex; flex-direction: column; min-height:100vh; margin: 0;">
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container px-5">
@@ -43,8 +43,8 @@
                         <p style=" border-bottom: 3px solid #00A2E0;"></p>
                         <p style="text-align: left;">The Provo Social Media Use and Mental Health Survey (SMUMH) strives to gather city-level data on how social media usage impacts mental health.</p>
                         <div>
-                            <a class="btn btn-primary #00A2E0" style="background-color: #00A2E0; margin-right:10px;" href="./survey">Take the Survey</a>
-                            <a class="btn btn-primary bg-transparent border border-white text-white" href="./dashboard">Learn More</a>
+                            <a class="btn btn-secondary" style="margin-right:10px;" href="./survey" >Take the Survey</a>
+                            <a class="transparent-button border border-white text-white" href="./dashboard">Learn More</a>
                         </div>
                     </div>
                 </div>
@@ -52,57 +52,58 @@
         </div>
         <br><br><br><br>
         <!-- Content Row-->
-        <div class="container" style="max-width: 1250px;">
-        <div class="row gx-4 gx-lg-5">
-            <div class="col-md-4 mb-5">
-                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9169592/">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <br><br>
-                            <h1 class="card-title">24.4%</h1>
-                            <p class="card-text">of adolescents are social media addicts</p>
-                            <br>
+        <div class="container" style="max-width: 1250px; max-height:max-content;">
+            <div class="row gx-4 gx-lg-5">
+                <!--<div class="col-md-4 mb-5">-->
+                <div class="col-sm-4 colS-md-4 col-lg-4 mb-5">
+                    <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9169592/">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <br><br>
+                                <h1 class="card-title">24.4%</h1>
+                                <p class="card-text">of adolescents are social media addicts</p>
+                                <br>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 mb-5">
-                <a
-                    href="https://www.statista.com/statistics/1369014/us-adults-taking-a-break-from-social-media-for-mental-health">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <br>
-                            <h1 class="card-title">36%</h1>
-                            <p class="card-text">of adults have taken an extended break from social media because of its
-                                negative effects on mental health</p>
-                            <br>
+                    </a>
+                </div>
+                <!--<div class="col-md-4 mb-5">-->
+                <div class="col-sm-4 col-md-4 col-lg-4 mb-5">
+                    <a
+                        href="https://www.statista.com/statistics/1369014/us-adults-taking-a-break-from-social-media-for-mental-health">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <br>
+                                <h1 class="card-title">36%</h1>
+                                <p class="card-text">of adults have taken an extended break from social media because of its
+                                    negative effects on mental health</p>
+                                <br>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 mb-5">
-                <a
-                    href="https://www.statista.com/statistics/1409808/tiktok-us-opinions-mental-health-effects-by-generation">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <br><br>
-                            <h1 class="card-title">78%</h1>
-                            <p class="card-text">of Gen Z believes TikTok to be addictive</p>
-                            <br>
+                    </a>
+                </div>
+                <!--<div class="col-md-4 mb-5">-->
+                <div class="col-sm-4 col-md-4 col-lg-4 mb-5">
+                    <a
+                        href="https://www.statista.com/statistics/1409808/tiktok-us-opinions-mental-health-effects-by-generation">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <br><br>
+                                <h1 class="card-title">78%</h1>
+                                <p class="card-text">of Gen Z believes TikTok to be addictive</p>
+                                <br>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</div>
     </header>
-    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br>
     <!-- Page Content-->
-    <div class="container px-4 px-lg-5"></div>
-       
+    <div class="container px-4 px-lg-5 flex-grow-1"></div>   
     <!-- Footer-->
-    <footer class="py-3" style="background-color: #00a0e089">
+    <footer class="py-3" style="background-color: #00a0e089; margin-top: auto;">
         <div class="container px-4 px-lg-5">
             <p class="m-0 text-center text-white">Copyright &copy; Provo City SMUMH 2023</p>
         </div>
