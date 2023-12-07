@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container px-5">
             <a class="navbar-brand" href="/">
-                <img src="../assets/ProvoSMUMHLogoInner.png" class='icon-img' style="width: 100px;"><!--<img src="assets/image.png" class="icon-img" style="width:160px;">-->
+                <img src="../assets/ProvoSMUMHLogoInner.png" class='icon-img' style="width: 50px;"><!--<img src="assets/image.png" class="icon-img" style="width:160px;">-->
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -111,7 +111,7 @@
                     <th>Occupation</th>
                     <th>Organization Types</th>
                     <th>Uses Social Media</th>
-                    <th>Platforms</th>
+                    <th>Social Media Platforms</th>
                     <th>Average Time Spent</th>
                     <th>Q9</th>
                     <th>Q10</th>
@@ -135,9 +135,9 @@
                       <td><%= responses[iCount].Gender %></td>
                       <td><%= responses[iCount].RelationshipStatus %></td>
                       <td><%= responses[iCount].OccupationStatus %></td>
-                      <td><%= responses[iCount].Age %></td>
+                      <td><%= responses[iCount].Occupations %></td>
                       <td style="text-align: center;"><%= responses[iCount].UseSocial ? 'Yes' : 'No'; %></td>
-                      <td><%= responses[iCount].Age %></td>
+                      <td><%= responses[iCount].SocialMediaPlatforms %></td>
                       <td style="text-align: center;"><%= responses[iCount].AvgTimePerDay %></td>
                       <% for (let questionIndex = 9; questionIndex <= 20; questionIndex++) { %>
                       <td style="text-align: center;">
