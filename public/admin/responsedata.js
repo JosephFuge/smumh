@@ -27,15 +27,22 @@ function addListeners() {
 
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         let searchValue = document.getElementById('responseSearchBar').value;
+        const tempSearchType = document.getElementById('searchTypeSelect').value;
         
         if (!searchValue || searchValue.trim().length === 0) {
             // Prevent form submission
             event.preventDefault();
             if (isSearching) {
                 isSearching = false;
+                document.getElementById('searchBarErrorText').style.display = 'none';
                 window.location.href = '/admin';
             }
+        } else if (tempSearchType === 'responseIdSearch' && Number.isNaN(parseInt(searchValue))) {
+            // Prevent form submission
+            event.preventDefault();
+            document.getElementById('searchBarErrorText').style.display = 'inline-block';
         } else {
+            document.getElementById('searchBarErrorText').style.display = 'none';
             isSearching = true;
         }
     });
@@ -96,20 +103,6 @@ function numToText(Q, value1, value2, value3, value4, value5) {
     }
 
     return(outcome)
-}
-
-function searchText() {
-    const searchInputText = document.getElementById('responseSearchBar').value;
-    if (searchInputText && searchInputText.length > 0) {
-        fetch(`/api/auth/searchResponses?text=${searchInputText}`, {
-            method: 'get',
-            headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            },
-        });
-    } else if (searchInputText && searchInputText.length === 0) {
-        location.window.reload();
-    }
 }
 
 function showAllRows() {

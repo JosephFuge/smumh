@@ -71,6 +71,13 @@ label {
     color: #555;
 }
 
+.input-error-text {
+    margin: 0;
+    color: red;
+    font-size: 14px;
+    display: none;
+}
+
 input {
     width: 100%;
     padding: 10px;
@@ -119,4 +126,9 @@ button {
 
 .response-column {
     flex: 0 0 48%;
+}
+
+#searchTypeSelect {
+    display: inline-block;
+    width: 125px;
 }
