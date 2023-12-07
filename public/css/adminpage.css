@@ -110,3 +110,13 @@ button {
 .nav-link:hover {
     cursor: pointer;
 }
+
+.response-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.response-column {
+    flex: 0 0 48%;
+}
