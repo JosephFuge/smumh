@@ -23,6 +23,15 @@ function changePage(pageNum) {
 
 function submitSurvey() {
     if (validateForm(2)) {
+        const currentSurveyUrl = window.location.href.toString();
+
+        console.log(currentSurveyUrl);
+
+        if (currentSurveyUrl.includes('?origin=')) {
+            surveyInfo['Origin'] = currentSurveyUrl.substring(currentSurveyUrl.indexOf('?origin=') + 8);
+            console.log(surveyInfo['Origin']);
+        }
+
         const surveyDataBody = JSON.stringify(surveyInfo);
         fetch('/api/createSurvey', {
             method: 'POST',

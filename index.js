@@ -58,17 +58,16 @@ async function getSurveyInfoList(pageNum) {
   return surveyResults.rows;
 }
 
-  app.get("/admin", (req, res) => {
-    knex.select().from("authtoken").then(userInfo => {
-      knex.select().from("response").then(surveyResponses => {
-      res.render("responses", {responses: surveyResponses, users: userInfo})
-    })
-  })
-})
-
 app.get("/admin", async (req, res) => {
   const results = await getSurveyInfoList();
-  res.render("responses", {responses: results});
+
+  for (const tempRow of results) {
+    rowSetAssociatedOrganizations(tempRow);
+  }
+
+  knex.select().from("authtoken").then(userInfo => {
+    res.render("responses", {responses: results, users: userInfo});
+  });
 });
 
 app.get("/", (req, res) => {
@@ -156,10 +155,11 @@ apiRouter.post('/createSurvey', async (req, res) => {
     uploadData['Timestamp'] = now;
     uploadData['UseSocial'] = uploadData['UseSocial'] ? 'Y' : 'N';  
 
-    uploadData['Origin'] = 'n/a';
     uploadData['City'] = uploadData['City'] ? uploadData['City'] : 'Provo';
 
     uploadData['OccupationStatus'] = uploadData['OccupationStatus'].charAt(0).toUpperCase() + uploadData['OccupationStatus'].slice(1);
+
+    uploadData['Origin'] = uploadData['Origin'] ? uploadData['Origin'] : 'n/a';
 
     const newResponses =  await knex.into('response').insert(uploadData).column('Timestamp', 'Age', 'Gender', 'RelationshipStatus', 'OccupationStatus', 'AssociatedUniversity', 'AssociatedCompany', 'AssociatedSchool', 'AssociatedPrivate', 'AssociatedGov', 'AssociatedNA', 'UseSocial', 'AvgTimePerDay', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'City', 'Origin').returning('ResponseID');
 
@@ -324,6 +324,10 @@ async function searchResponses(textInput) {
       AND p1."PlatformName" IN (SELECT p2."PlatformName" FROM responseplatform rp2 INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID" WHERE rp2."ResponseID" = r1."ResponseID"))\
       ORDER BY r1."ResponseID" ASC;', 
       [likeInput, likeInput, likeInput, likeInput, likeInput, likeInput, likeInput]);
+
+      for (const tempRow of answer) {
+        rowSetAssociatedOrganizations(tempRow);
+      }
     
       return answer.rows;
     }
@@ -395,6 +399,10 @@ app.get('/admin/searchResponses', async (req, res) => {
     });
   } else {
     const results = await getSurveyInfoList();
+
+    for (const tempRow of results) {
+      rowSetAssociatedOrganizations(tempRow);
+    }
 
     knex.select().from("authtoken").then(userInfo => {
       res.render('responses', {responses: results, users: userInfo});
