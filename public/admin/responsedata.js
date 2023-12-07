@@ -105,12 +105,25 @@ function numToText(Q, value1, value2, value3, value4, value5) {
     return(outcome)
 }
 
+function showShowAll() {
+    document.getElementById('showAllButton').style.display = 'inline-block';
+}
+
 function showAllRows() {
-    Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
-        tempRow.style.display = 'table-row';
-    });
-    document.getElementById('showSingleResponse').style.display = 'none';
-    document.getElementById('showAllButton').style.display = 'none';
+    if (isSearching == true) {
+        isSearching = false
+        window.location.href = '/admin'
+        document.getElementById('showAllButton').style.display = 'none';
+        sessionStorage.setItem('search', 'false')
+    }
+    else {
+        Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
+            tempRow.style.display = 'table-row';
+        });
+        document.getElementById('showSingleResponse').style.display = 'none';
+        document.getElementById('showAllButton').style.display = 'none';
+        sessionStorage.setItem('search', 'false')
+    }
 }
 
 function togglePassword(fieldId) {
@@ -145,6 +158,7 @@ function showAdminCreate() {
     document.getElementById("createUser").style.display = "";
     document.getElementById("showTable").style.display = "none";
     document.getElementById("showSingleResponse").style.display = "none";
+    document.getElementById('deleteError').style.display = "none";
 }
 
 function showSurveyData() {
@@ -153,6 +167,7 @@ function showSurveyData() {
     document.getElementById("createUser").style.display = "none";
     document.getElementById("showTable").style.display = "";
     document.getElementById("showSingleResponse").style.display = "none";
+    document.getElementById('deleteError').style.display = "none";
     document.getElementById("viewSurveyButton").style.fontWeight = "bold";
     document.getElementById("viewUsersButton").style.fontWeight = "";
 }
@@ -165,13 +180,19 @@ function clearInput() {
     showAdminManage()
 }
 
-function deleteUser(usernameVariable) {
-    fetch('/api/auth/deleteUser', {
+function deleteUser(usernameVariable, arrayLength) {
+    if (arrayLength < 2) {
+        document.getElementById('deleteError').style.display = "";
+        document.getElementById('deleteError').innerHTML = "YOU CANNOT DELETE THE LAST USER";
+    }
+    else {
+        fetch('/api/auth/deleteUser', {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify({username: usernameVariable})
-    });
-    window.location.reload()
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ username: usernameVariable })
+        });
+        window.location.reload()
+    }
 }
 
 async function registerUser() {
@@ -196,4 +217,14 @@ function loadPage() {
     else {
         showSurveyData()
     }
+
+    if (sessionStorage.getItem("search") == "true") {
+        showShowAll()
+    }
+}
+
+function logout() {
+    fetch(`/api/auth/logout`, {
+    method: 'delete',
+    });
 }

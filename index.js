@@ -442,4 +442,9 @@ apiRouter.post("/auth/deleteUser", async (req, res) => {
   res.status(200)
 });
 
+apiRouter.delete('/auth/logout', (_req, res) => {
+  res.clearCookie('token');
+  res.status(204).end();
+});
+
 app.listen(PORT_NUM, () => console.log(`Server is listening on port ${PORT_NUM}`));
