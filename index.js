@@ -32,6 +32,11 @@ app.get("/submitted", (req, res) => {
   res.render("submitted");
 });
 
+// app.get("/unauth", (req, res) => {
+//   res.render("unauth");
+// });
+
+
 // Frontend static middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -228,10 +233,10 @@ async function checkAuth (req, res, next) {
     if (user) {
       next();
     } else {
-      res.status(401).send({ msg: 'Unauthorized' });
+      res.render('unauth');
     }
   } catch (error) {
-    res.status(401).send({ msg: 'Unauthorized' });
+    res.render('unauth');
   }
 }
 
