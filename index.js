@@ -298,9 +298,19 @@ async function searchResponses(textInput) {
       .orWhere('Q20', numberInput);
       return answer;
     } else {
-      console.log(`textInput: ${textInput}`);
       const likeInput = `%${textInput}%`;
-      const answer = await knex.raw('SELECT DISTINCT r1."ResponseID", r1."Timestamp", r1."Age", r1."Gender", r1."RelationshipStatus", r1."OccupationStatus", r1."UseSocial", r1."AvgTimePerDay", r1."AssociatedUniversity", r1."AssociatedCompany", r1."AssociatedSchool", r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15", r1."Q16", r1."Q17", r1."Q18", r1."Q19", r1."Q20" FROM response r1 INNER JOIN responseplatform rp1 ON r1."ResponseID" = rp1."ResponseID" INNER JOIN platform p1 ON rp1."PlatformID" = p1."PlatformID" WHERE r1."Gender" LIKE ? OR r1."RelationshipStatus" LIKE ? OR r1."OccupationStatus" LIKE ? OR r1."AvgTimePerDay" LIKE ? OR r1."City" LIKE ? OR r1."Origin" LIKE ? OR (p1."PlatformName" LIKE ? AND p1."PlatformName" IN (SELECT p2."PlatformName" FROM responseplatform rp2 INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID" WHERE rp2."ResponseID" = r1."ResponseID")) ORDER BY r1."ResponseID" ASC;', 
+      const answer = await knex.raw('SELECT DISTINCT r1."ResponseID", r1."Timestamp", r1."Age", r1."Gender", r1."RelationshipStatus",\
+      r1."OccupationStatus", r1."UseSocial", r1."AvgTimePerDay", r1."AssociatedUniversity", r1."AssociatedCompany", r1."AssociatedSchool",\
+      r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15",\
+      r1."Q16", r1."Q17", r1."Q18", r1."Q19", r1."Q20", (SELECT string_agg(p2."PlatformName", \', \') FROM responseplatform rp2\
+      INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID"\
+      WHERE rp2."ResponseID" = r1."ResponseID") AS "SocialMediaPlatforms"\
+      FROM response r1 INNER JOIN responseplatform rp1 ON r1."ResponseID" = rp1."ResponseID"\
+      INNER JOIN platform p1 ON rp1."PlatformID" = p1."PlatformID"\
+      WHERE r1."Gender" LIKE ? OR r1."RelationshipStatus" LIKE ? OR r1."OccupationStatus" LIKE ? OR r1."AvgTimePerDay" LIKE ? OR r1."City" LIKE ? OR r1."Origin" LIKE ?\
+      OR (p1."PlatformName" LIKE ? \
+      AND p1."PlatformName" IN (SELECT p2."PlatformName" FROM responseplatform rp2 INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID" WHERE rp2."ResponseID" = r1."ResponseID"))\
+      ORDER BY r1."ResponseID" ASC;', 
       [likeInput, likeInput, likeInput, likeInput, likeInput, likeInput, likeInput]);
     
       return answer.rows;
@@ -327,7 +337,6 @@ function checkAssociatedColumn(rowResult, columnName, deleteColumn) {
 
 app.get('/admin/searchResponses', async (req, res) => {
   const searchText = req.query.searchText;
-  console.log(`searchText: ${searchText}`);
   if (searchText) {
     const matchedRows = await searchResponses(searchText);
 
@@ -365,10 +374,15 @@ app.get('/admin/searchResponses', async (req, res) => {
       }
     }
 
-    res.render('responses', {responses: matchedRows});
+    knex.select().from("authtoken").then(userInfo => {
+      res.render('responses', {responses: matchedRows, users: userInfo});
+    });
   } else {
     const results = await getSurveyInfoList();
-    res.render('responses', {responses: results});
+
+    knex.select().from("authtoken").then(userInfo => {
+      res.render('responses', {responses: results, users: userInfo});
+    });
   }
 });
 
