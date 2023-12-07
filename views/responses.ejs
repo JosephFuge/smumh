@@ -38,7 +38,7 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a id="viewSurveyButton" class="nav-link subbar" style="color:white" onclick="showSurveyData()">View Survey Data</a></li>
                     <li class="nav-item"><a id="viewUsersButton" class="nav-link subbar" style="color:white" onclick="showAdminManage()">Manage Users</a></li>
-                    <li class="nav-item"><a id="logOutButton" class="nav-link subbar" style="color:white" href="/login" onclick="document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';">Log out</a></li>
+                    <li class="nav-item"><a id="logOutButton" class="nav-link subbar" style="color:white" href="/login" onclick="logout()">Log out</a></li>
                 </ul>
             </div>
         </div>
@@ -99,7 +99,7 @@
             <button type="button" id="showAllButton" onclick="showAllRows()" style="padding: 6px; font-size: small;">SHOW ALL</button>
             <form id="searchForm" action="searchResponses" method="get">
                 <input type="text" id="responseSearchBar" name="searchText" placeholder="Search...">
-                <button type="submit" id="responseSearchButton" style="padding: 6px; font-size: small;">SEARCH</button>
+                <button type="submit" id="responseSearchButton" style="padding: 6px; font-size: small;" onclick="showShowAll(); sessionStorage.setItem('search', 'true')">SEARCH</button>
             </form>
         </div>
         <table id="surveyTable" class="table table-striped table-bordered table-hover" style="width:95%; margin: auto; margin-bottom: 40px;">
