@@ -6,7 +6,6 @@ const PORT_NUM = process.env.PORT || 3001;
 app.use(express.urlencoded({extended: true}));
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 
@@ -23,16 +22,6 @@ const knex = require("knex")({
     ssl: true ? {rejectUnauthorized: false} : false
   }
 });
-
-
-const corsOptions = {
-  origin: 'https://provosmumh.click',
-  optionsSuccessStatus: 200, // For legacy browser support
-  methods: "GET, POST", // Allowable HTTP methods
-  credentials: true // Enable credentials (cookies, authorization headers, etc.)
-};
-
-app.use(cors(corsOptions));
 
 
 app.get("/index", (req, res) => {
@@ -57,23 +46,14 @@ app.set("view engine", "ejs");
 app.use(express.json());
 
 async function getSurveyInfoList(pageNum) {
-  // const orgTypeSet = new Set(['University', 'Private', 'Government', 'Organization']);
-  // const platformSet = new Set(['Youtube', 'Instagram']);
-  // const testSurvey1 = new SurveyData(18, 'M', 'Single', 'University Student', orgTypeSet, true, platformSet, 'Between 1 and 2 hours', 2, 3, 1, 4, 3, 5, 2, 3, 5, 4, 2, 1);
-  // const testSurvey2 = new SurveyData();
-  // const testSurveys = [testSurvey1, testSurvey2];
-
-  const surveyResults = await knex.select().from("response");
+  const surveyResults = await knex.select().from("response").orderBy([{column: 'ResponseID', order: 'asc'}]);
 
   return surveyResults;
 }
 
-app.get("/admin", (req, res) => {
-  knex.select().from("authtoken").then(userInfo => {
-    knex.select().from("response").then(surveyResponses => {
-    res.render("responses", {responses: surveyResponses, users: userInfo})
-  })
-  })
+app.get("/admin", async (req, res) => {
+  const results = await getSurveyInfoList();
+  res.render("responses", {responses: results});
 });
 
 app.get("/", (req, res) => {
@@ -91,22 +71,6 @@ app.get("/dashboard", (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 })
-
-/*app.get('/admin', async (req, res, next) => {
-
-  // const pageNumber = req.body['pageNum'];
-  // const pageSize = req.body['pageSize'];
-
-  const surveyResponses = await getSurveyInfoList();
-
-  res.render('responses', {responses: surveyResponses});
-
-  // if (Number.isNaN(pageNumber) || Number.isNaN(pageSize)) {
-  //   res.status(400).json({message: 'Page number or page size is invalid'});
-  // } else {
-    
-  // }
-});*/
 
 // API listener middleware
 const apiRouter = express.Router();
@@ -237,6 +201,7 @@ apiRouter.post('/createSurvey', async (req, res) => {
   }
 });
 
+// Check user login auth middleware
 async function checkAuth (req, res, next) {
   try {
     authToken = req.cookies['token'];
@@ -306,6 +271,69 @@ async function createUser(username, password) {
 
   return user;
 }
+
+async function searchResponses(textInput) {
+  try {
+    if (!Number.isNaN(parseInt(textInput))) {
+      const numberInput = parseInt(textInput);
+      console.log(`numberInput: ${numberInput}`);
+      const answer = await knex('response')
+      .select()
+      .where('ResponseID', numberInput)
+      .orWhere('Age', numberInput)
+      .orWhere(knex.raw('"AvgTimePerDay" LIKE ?', [`%${textInput}%`]))
+      .orWhere('Q9', numberInput)
+      .orWhere('Q10', numberInput)
+      .orWhere('Q11', numberInput)
+      .orWhere('Q12', numberInput)
+      .orWhere('Q13', numberInput)
+      .orWhere('Q14', numberInput)
+      .orWhere('Q15', numberInput)
+      .orWhere('Q16', numberInput)
+      .orWhere('Q17', numberInput)
+      .orWhere('Q18', numberInput)
+      .orWhere('Q19', numberInput)
+      .orWhere('Q20', numberInput);
+      return answer;
+    } else {
+      console.log(`numberInput: ${textInput}`);
+      const likeInput = `%${textInput}%`;
+      const answer = await knex.raw('SELECT DISTINCT r1."ResponseID" FROM response r1\
+      INNER JOIN responseplatform rp1 ON r1."ResponseID" = rp1."ResponseID"\
+      INNER JOIN platform p1 ON rp1."PlatformID" = p1."PlatformID"\
+      WHERE r1."Gender" LIKE ?\
+      OR r1."RelationshipStatus" LIKE ?\
+      OR r1."OccupationStatus" LIKE ?\
+      OR r1."AvgTimePerDay" LIKE ?\
+      OR r1."City" LIKE ?\
+      OR r1."Origin" LIKE ?\
+      OR (p1."PlatformName" LIKE ? AND p1."PlatformName" IN\
+      (SELECT p2."PlatformName" FROM responseplatform rp2\
+      INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID"\
+         WHERE rp2."ResponseID" = r1."ResponseID"))\
+      ORDER BY r1."ResponseID" ASC;', 
+      [likeInput, likeInput, likeInput, likeInput, likeInput, likeInput, likeInput]);
+    
+      return answer;
+    }
+  } catch (error) {
+    console.log(`query failed. error: ${error}`);
+    return [];
+  }
+} 
+
+app.get('/admin/searchResponses', async (req, res) => {
+  const searchText = req.query.searchText;
+  console.log(`searchText: ${searchText}`);
+  if (searchText) {
+    const matchedRows = await searchResponses(searchText);
+    console.log(matchedRows);
+    res.render('responses', {responses: matchedRows});
+  } else {
+    const results = await getSurveyInfoList();
+    res.render('responses', {responses: results});
+  }
+});
 
 apiRouter.post('/auth/create', async (req, res) => {
   if (await getUser(req.body.username)) {

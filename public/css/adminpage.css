@@ -7,7 +7,19 @@ thead {
     border-bottom-width: 2px;
 }
 
+#showAllButton {
+    display: none;
+}
+
+#responseSearchBar {
+    /* display: inline-block; */
+    width: 250px;
+    height: 34px;
+    margin-bottom: 0px;
+}
+
 .response-page {
+    cursor: pointer;
     display: none;
 }
 
@@ -40,13 +52,17 @@ h2 {
     color: #333;
 }
 
-form {
+form:not(#searchForm) {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
+}
+
+#searchForm {
+    display: inline-block;
 }
 
 label {
