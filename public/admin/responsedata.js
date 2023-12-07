@@ -1,4 +1,6 @@
 let currentPage = 0;
+let isSearching = false;
+
 function changePage(pageNum) {
     const newPage = Array.from(document.getElementsByClassName(`page-${pageNum}`));
     if (newPage.length > 0) {
@@ -8,6 +10,65 @@ function changePage(pageNum) {
         newPage.forEach((rowElement) => rowElement.style.display = 'table-row');
         currentPage = pageNum;
     }
+}
+
+function addListeners() {
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('searchResponses?')) {
+        isSearching = true;
+    }
+
+    document.getElementById('responseSearchBar').addEventListener("keyup", (event) => { 
+        if (event.key == 'Enter') { 
+            document.getElementById('responseSearchButton').click();
+        } 
+    }); 
+
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        let searchValue = document.getElementById('responseSearchBar').value;
+        
+        if (!searchValue || searchValue.trim().length === 0) {
+            // Prevent form submission
+            event.preventDefault();
+            if (isSearching) {
+                isSearching = false;
+                window.location.href = '/admin';
+            }
+        } else {
+            isSearching = true;
+        }
+    });
+}
+
+function selectOneRow(responseID) {
+    Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
+        if (tempRow.id !== `response-${responseID}`) {
+            tempRow.style.display = 'none';
+        }
+    });
+    document.getElementById('showAllButton').style.display = 'inline-block';
+}
+
+function searchText() {
+    const searchInputText = document.getElementById('responseSearchBar').value;
+    if (searchInputText && searchInputText.length > 0) {
+        fetch(`/api/auth/searchResponses?text=${searchInputText}`, {
+            method: 'get',
+            headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+    } else if (searchInputText && searchInputText.length === 0) {
+        location.window.reload();
+    }
+}
+
+function showAllRows() {
+    Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
+        tempRow.style.display = 'table-row';
+    });
+    document.getElementById('showAllButton').style.display = 'none';
 }
 
 function togglePassword(fieldId) {
