@@ -112,12 +112,25 @@ function searchText() {
     }
 }
 
+function showShowAll() {
+    document.getElementById('showAllButton').style.display = 'inline-block';
+}
+
 function showAllRows() {
-    Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
-        tempRow.style.display = 'table-row';
-    });
-    document.getElementById('showSingleResponse').style.display = 'none';
-    document.getElementById('showAllButton').style.display = 'none';
+    if (isSearching == true) {
+        isSearching = false
+        window.location.href = '/admin'
+        document.getElementById('showAllButton').style.display = 'none';
+        sessionStorage.setItem('search', 'false')
+    }
+    else {
+        Array.from(document.getElementsByClassName(`page-${currentPage}`)).forEach((tempRow) => {
+            tempRow.style.display = 'table-row';
+        });
+        document.getElementById('showSingleResponse').style.display = 'none';
+        document.getElementById('showAllButton').style.display = 'none';
+        sessionStorage.setItem('search', 'false')
+    }
 }
 
 function togglePassword(fieldId) {
@@ -203,4 +216,14 @@ function loadPage() {
     else {
         showSurveyData()
     }
+
+    if (sessionStorage.getItem("search") == "true") {
+        showShowAll()
+    }
+}
+
+function logout() {
+    fetch(`/api/auth/logout`, {
+    method: 'delete',
+    });
 }
