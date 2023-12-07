@@ -38,6 +38,7 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a id="viewSurveyButton" class="nav-link subbar" style="color:white" onclick="showSurveyData()">View Survey Data</a></li>
                     <li class="nav-item"><a id="viewUsersButton" class="nav-link subbar" style="color:white" onclick="showAdminManage()">Manage Users</a></li>
+                    <li class="nav-item"><a id="logOutButton" class="nav-link subbar" style="color:white" href="/login" onclick="document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';">Log out</a></li>
                 </ul>
             </div>
         </div>
@@ -129,7 +130,7 @@
             </thead>
             <tbody>
                 <% for (let iCount = 0; iCount < responses.length; iCount++) { %>
-                    <tr class="page-<%= Math.floor(iCount / 25) %> response-page" id="response-<%= responses[iCount].ResponseID %>" onclick="selectOneRow(<%= responses[iCount].ResponseID %>);">
+                    <tr class="page-<%= Math.floor(iCount / 25) %> response-page" id="response-<%= responses[iCount].ResponseID %>" onclick="selectOneRow('<%= responses[iCount].ResponseID %>'); showSingleResponseBox('<%= responses[iCount].Age %>','<%= responses[iCount].Gender %>','<%= responses[iCount].RelationshipStatus %>','<%= responses[iCount].OccupationStatus %>','<%= responses[iCount].Age %>','<%= responses[iCount].UseSocial %>','<%= responses[iCount].Age %>','<%= responses[iCount].AvgTimePerDay %>','<%= responses[iCount].Q9 %>','<%= responses[iCount].Q10 %>','<%= responses[iCount].Q11 %>','<%= responses[iCount].Q12 %>','<%= responses[iCount].Q13 %>','<%= responses[iCount].Q14 %>','<%= responses[iCount].Q15 %>','<%= responses[iCount].Q16 %>','<%= responses[iCount].Q17 %>','<%= responses[iCount].Q18 %>','<%= responses[iCount].Q19 %>','<%= responses[iCount].Q20 %>')">
                       <td><%= responses[iCount].ResponseID %></td>  
                       <td><%= responses[iCount].Age %></td>
                       <td><%= responses[iCount].Gender %></td>
@@ -148,6 +149,120 @@
                  <% } %>
             </tbody>
         </table>
+    </div>
+    <div id="showSingleResponse" class="test-div">
+        <form style="max-width: 800px;">
+            <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: bold;">Survey Response Details</h2>
+            <div class="response-content">
+                <div class="response-column">
+                    <div class="response-item">
+                        <label for="age">Age:</label>
+                        <span id="age"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="gender">Gender:</label>
+                        <span id="gender"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="relationshipStatus">Relationship Status:</label>
+                        <span id="relationshipStatus"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="occupationStatus">Occupation Status:</label>
+                        <span id="occupationStatus"></span>
+                    </div>
+                    <br>
+                </div>
+                <div class="response-column">
+                    <div class="response-item">
+                        <label for="affiliatedOrganizations">Affiliated Organizations:</label>
+                        <span id="affiliatedOrganizations"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="useSocialMedia">Do you use social media?:</label>
+                        <span id="useSocialMedia"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="socialMediaPlatforms">Social Media Platforms:</label>
+                        <span id="socialMediaPlatforms"></span>
+                    </div>
+                    <br>
+                    <div class="response-item">
+                        <label for="timePerDay">Time Spent Per Day:</label>
+                        <span id="timePerDay"></span>
+                    </div>
+                    <br>
+                    <!-- Add other fields as needed -->
+                </div>
+            </div>
+            <div class="response-item">
+                <label for="Q9">How often do you find yourself using social media without a specific purpose?</label>
+                <span id="Q9"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q10">How often do you get distracted by social media when you are busy doing something?</label>
+                <span id="Q10"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q11">Do you feel restless if you haven’t used social media in a while?</label>
+                <span id="Q11"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q12">How easily distracted are you?</label>
+                <span id="Q12"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q13">How much are you bothered by worries?</label>
+                <span id="Q13"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q14">Do you find it difficult to concentrate on things?</label>
+                <span id="Q14"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q15">How often do you compare yourself to other successful people through the use of social media?</label>
+                <span id="Q15"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q16">Following the previous question, how do you feel about these comparisons, generally speaking?</label>
+                <span id="Q16"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q17">How often do you look to seek validation from features of social media?</label>
+                <span id="Q17"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q18">How often do you feel depressed or down?</label>
+                <span id="Q18"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q19">How frequently does your interest in daily activities fluctuate?</label>
+                <span id="Q19"></span>
+            </div>
+            <br>
+            <div class="response-item">
+                <label for="Q20">How often do you face issues regarding sleep?</label>
+                <span id="Q20"></span>
+            </div>
+            <br>
+            <button type="button" id="closeBoxButton" onclick="showAllRows()">Close</button>
+        </form>
+        <br><br><br>
     </div>
     <!-- Footer-->
     <footer class="py-3" style="background-color: #00a0e089">

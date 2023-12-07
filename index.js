@@ -58,16 +58,17 @@ async function getSurveyInfoList(pageNum) {
   return surveyResults.rows;
 }
 
+  app.get("/admin", (req, res) => {
+    knex.select().from("authtoken").then(userInfo => {
+      knex.select().from("response").then(surveyResponses => {
+      res.render("responses", {responses: surveyResponses, users: userInfo})
+    })
+  })
+})
+
 app.get("/admin", async (req, res) => {
-  const surveyResponses = await getSurveyInfoList();
-
-  for (const tempRow of surveyResponses) {
-    rowSetAssociatedOrganizations(tempRow);
-  }
-
-  knex.select().from("authtoken").then(userInfo => {    
-    res.render("responses", {responses: surveyResponses, users: userInfo})
-  });
+  const results = await getSurveyInfoList();
+  res.render("responses", {responses: results});
 });
 
 app.get("/", (req, res) => {
