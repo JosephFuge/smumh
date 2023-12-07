@@ -46,17 +46,28 @@ app.set("view engine", "ejs");
 app.use(express.json());
 
 async function getSurveyInfoList(pageNum) {
-  const surveyResults = await knex.select().from("response").orderBy([{column: 'ResponseID', order: 'asc'}]);
+  const surveyResults = await knex.raw('SELECT DISTINCT r1."ResponseID", r1."Timestamp", r1."Age", r1."Gender", r1."RelationshipStatus",\
+  r1."OccupationStatus", r1."UseSocial", r1."AvgTimePerDay", r1."AssociatedUniversity", r1."AssociatedCompany", r1."AssociatedSchool",\
+  r1."AssociatedPrivate", r1."AssociatedGov", r1."AssociatedNA", r1."Q9", r1."Q9", r1."Q10", r1."Q11", r1."Q12", r1."Q13", r1."Q14", r1."Q15",\
+  r1."Q16", r1."Q17", r1."Q18", r1."Q19", r1."Q20", (SELECT string_agg(p2."PlatformName", \', \') FROM responseplatform rp2\
+  INNER JOIN platform p2 ON rp2."PlatformID" = p2."PlatformID"\
+  WHERE rp2."ResponseID" = r1."ResponseID") AS "SocialMediaPlatforms"\
+  FROM response r1 \
+  ORDER BY r1."ResponseID" ASC;');
 
-  return surveyResults;
+  return surveyResults.rows;
 }
 
-app.get("/admin", (req, res) => {
-  knex.select().from("authtoken").then(userInfo => {
-    knex.select().from("response").then(surveyResponses => {
+app.get("/admin", async (req, res) => {
+  const surveyResponses = await getSurveyInfoList();
+
+  for (const tempRow of surveyResponses) {
+    rowSetAssociatedOrganizations(tempRow);
+  }
+
+  knex.select().from("authtoken").then(userInfo => {    
     res.render("responses", {responses: surveyResponses, users: userInfo})
-  })
-  })
+  });
 });
 
 app.get("/", (req, res) => {
@@ -335,13 +346,8 @@ function checkAssociatedColumn(rowResult, columnName, deleteColumn) {
   }
 }
 
-app.get('/admin/searchResponses', async (req, res) => {
-  const searchText = req.query.searchText;
-  if (searchText) {
-    const matchedRows = await searchResponses(searchText);
-
-    for (const tempRow of matchedRows) {
-      const occupationArr = [];
+function rowSetAssociatedOrganizations(tempRow) {
+  const occupationArr = [];
       tempRow['Occupations'] = '';
       if (checkAssociatedColumn(tempRow, 'AssociatedUniversity', true)) {
         occupationArr.push('University');
@@ -372,6 +378,15 @@ app.get('/admin/searchResponses', async (req, res) => {
       } else {
         tempRow['Occupations'] = 'None';
       }
+}
+
+app.get('/admin/searchResponses', async (req, res) => {
+  const searchText = req.query.searchText;
+  if (searchText) {
+    const matchedRows = await searchResponses(searchText);
+
+    for (const tempRow of matchedRows) {
+      rowSetAssociatedOrganizations(tempRow);
     }
 
     knex.select().from("authtoken").then(userInfo => {

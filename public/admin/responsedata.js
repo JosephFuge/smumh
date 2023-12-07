@@ -1,4 +1,5 @@
 let currentPage = 0;
+let isSearching = false;
 
 function changePage(pageNum) {
     const newPage = Array.from(document.getElementsByClassName(`page-${pageNum}`));
@@ -12,6 +13,12 @@ function changePage(pageNum) {
 }
 
 function addListeners() {
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('searchResponses?')) {
+        isSearching = true;
+    }
+
     document.getElementById('responseSearchBar').addEventListener("keyup", (event) => { 
         if (event.key == 'Enter') { 
             document.getElementById('responseSearchButton').click();
@@ -24,6 +31,12 @@ function addListeners() {
         if (!searchValue || searchValue.trim().length === 0) {
             // Prevent form submission
             event.preventDefault();
+            if (isSearching) {
+                isSearching = false;
+                window.location.href = '/admin';
+            }
+        } else {
+            isSearching = true;
         }
     });
 }
