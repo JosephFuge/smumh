@@ -21,7 +21,7 @@ function changePage(pageNum) {
     }
 }
 
-function submitSurvey() {
+async function submitSurvey() {
     if (validateForm(2)) {
         const currentSurveyUrl = window.location.href.toString();
 
@@ -33,12 +33,12 @@ function submitSurvey() {
         }
 
         const surveyDataBody = JSON.stringify(surveyInfo);
-        fetch('/api/createSurvey', {
+        await fetch('/api/createSurvey', {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: surveyDataBody
         });
-        window.location.href = "/submitted"
+        window.location.href = "/submitted";
     }
 }
 
