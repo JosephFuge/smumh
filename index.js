@@ -1,3 +1,10 @@
+/*
+        Section 4
+        Group 9
+        Annelise Anderson, Maleah Yee, Coleman Shuldberg, Joseph Fuge
+        Description: Server code
+*/
+
 const express = require("express");
 const app = express();
 const SurveyData = require("./shared/SurveyData.js");
